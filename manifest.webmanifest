@@ -1,0 +1,15 @@
+{
+  "name": "光年留影 LIGHTYEAR · 摄影作品集",
+  "short_name": "光年留影",
+  "description": "纯白鸢尾花的摄影作品集：城市、自然、人像与猫的影像记录。",
+  "lang": "zh-CN",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F7F3EA",
+  "theme_color": "#8E2F2F",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

@@ -5,13 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <title>光年留影 LIGHTYEAR · 摄影作品集</title>
-<link rel="preload" as="image" href="photos/hero.jpg" fetchpriority="high">
+<link rel="preload" as="image" href="photos/hero.webp" fetchpriority="high">
 <meta property="og:type" content="website">
 <meta property="og:title" content="光年留影 LIGHTYEAR · 摄影作品集">
 <meta property="og:description" content="纯白鸢尾花的摄影作品集：城市、自然、人像与猫的影像记录。">
 <meta property="og:url" content="https://glaszvf-web.github.io/lightyear/">
 <meta property="og:image" content="https://glaszvf-web.github.io/lightyear/photos/hero.jpg">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://glaszvf-web.github.io/lightyear/">
+<meta name="theme-color" content="#F7F3EA" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#141210" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"ImageGallery","name":"光年留影 LIGHTYEAR","url":"https://glaszvf-web.github.io/lightyear/","image":"https://glaszvf-web.github.io/lightyear/photos/hero.jpg","author":{"@type":"Person","name":"纯白鸢尾花"},"description":"纯白鸢尾花的摄影作品集：城市、自然、人像与猫的影像记录。"}</script>
 <meta name="description" content="光年留影（LIGHTYEAR）——纯白鸢尾花的摄影作品集：城市、自然、人像与猫的影像记录。">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='8' fill='%238e2f2f'/%3E%3Ctext x='20' y='28' text-anchor='middle' font-family='serif' font-size='24' fill='%23f7f3ea'%3E%E9%B8%A2%3C/text%3E%3C/svg%3E">
 <script>try{var t=localStorage.getItem('ly.theme');if(t==='dark'||(!t&&window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.dataset.theme='dark';}}catch(e){}</script>
@@ -298,6 +304,100 @@ blockquote{margin:0;}
 }
 img[data-lqip="1"]{filter:blur(14px);transform:scale(1.05);transition:filter .55s ease,transform .55s ease}
 img[data-lqip="1"].lqip-done{filter:none;transform:none}
+
+/* ============================================================
+   v4 · 质感与动效堆料
+   ============================================================ */
+:root{--shimmer:rgba(30,28,24,.06);--head-bg:rgba(247,243,234,.86);}
+[data-theme="dark"]{--shimmer:rgba(236,230,216,.07);--head-bg:rgba(20,18,16,.82);}
+
+/* 主题切换柔和过渡 */
+body{transition:background-color .4s var(--ease),color .4s var(--ease);}
+.site-head{transition:background-color .4s var(--ease),border-color .4s var(--ease),box-shadow .4s var(--ease);}
+.gear,.site-foot{transition:background-color .4s var(--ease),border-color .4s var(--ease);}
+
+/* 顶栏毛玻璃 + 滚动投影 */
+.site-head{background:var(--head-bg);backdrop-filter:blur(14px) saturate(1.1);-webkit-backdrop-filter:blur(14px) saturate(1.1);}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.site-head{background:var(--paper);}}
+.site-head.scrolled{box-shadow:0 10px 30px -22px rgba(30,28,24,.55);}
+
+/* 滚动进度条 */
+.scroll-progress{position:fixed;top:0;left:0;right:0;height:2px;z-index:65;pointer-events:none;}
+.scroll-progress b{display:block;height:100%;background:var(--accent);transform:scaleX(0);transform-origin:0 50%;}
+
+/* 回到顶部 */
+.to-top{position:fixed;right:clamp(14px,3vw,30px);bottom:clamp(14px,3vw,30px);z-index:50;width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:var(--head-bg);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:var(--mist);display:grid;place-items:center;cursor:pointer;opacity:0;translate:0 12px;pointer-events:none;transition:opacity .32s var(--ease),translate .32s var(--ease),color .2s var(--ease),border-color .2s var(--ease);box-shadow:0 12px 32px -14px rgba(30,28,24,.45);}
+.to-top.show{opacity:1;translate:0 0;pointer-events:auto;}
+.to-top:hover{color:var(--ink);border-color:var(--mist);}
+.to-top svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+
+/* 作品卡：骨架微光 + 光泽扫过 + 标题染色 */
+.work-open{position:relative;background:var(--paper-deep);}
+.work-open::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 34%,var(--shimmer) 50%,transparent 66%);translate:-100% 0;animation:shimmer 1.9s var(--ease) infinite;pointer-events:none;}
+.work.img-loaded .work-open::after{display:none;}
+@keyframes shimmer{100%{translate:100% 0;}}
+.work .work-open::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(115deg,transparent 42%,rgba(255,255,255,.13) 50%,transparent 58%);translate:-130% 0;pointer-events:none;}
+@media (hover:hover){.work:hover .work-open::before{translate:130% 0;transition:translate .9s var(--ease);}}
+.work-title{transition:color .3s var(--ease);}
+.work:hover .work-title{color:var(--accent);}
+
+/* 首屏：Ken Burns 缓推 + 文案入场 */
+@keyframes kenburns{0%{transform:scale(1.02);}100%{transform:scale(1.09);}}
+.hero-media{animation:kenburns 22s var(--ease) infinite alternate;transform-origin:52% 42%;}
+@keyframes rise{0%{opacity:0;translate:0 24px;}100%{opacity:1;translate:0 0;}}
+.hero-copy>*{animation:rise .9s var(--ease) both;}
+.hero-copy>*:nth-child(1){animation-delay:.1s;}
+.hero-copy>*:nth-child(2){animation-delay:.25s;}
+.hero-copy>*:nth-child(3){animation-delay:.4s;}
+.hero-copy>*:nth-child(4){animation-delay:.55s;}
+.hero-copy>*:nth-child(5){animation-delay:.7s;}
+html.settled .hero-copy>*{opacity:1;translate:0 0;animation:none;}
+
+/* 语录：笔触描绘 + 逐行浮现 */
+.quote-ink path{stroke-dasharray:1;stroke-dashoffset:1;}
+.quote-wrap.in .quote-ink path{transition:stroke-dashoffset 1.5s ease .25s;stroke-dashoffset:0;}
+.quote-text span{opacity:0;translate:0 16px;transition:opacity .75s var(--ease),translate .75s var(--ease);}
+.quote-wrap.in .quote-text span{opacity:1;translate:0 0;}
+.quote-wrap.in .quote-text span:nth-child(2){transition-delay:.18s;}
+.quote-wrap.in .quote-text span:nth-child(3){transition-delay:.36s;}
+
+/* 筛选切换柔和入场 */
+.work.pop{animation:pop .5s var(--ease) both;}
+@keyframes pop{0%{opacity:0;translate:0 14px;}100%{opacity:1;translate:0 0;}}
+
+/* 导航高亮 */
+.head-nav a.active{color:var(--ink);border-color:var(--accent);}
+
+/* 关于：统计带 */
+.about-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--seed-radius);overflow:hidden;margin-bottom:clamp(28px,5vw,52px);}
+.about-stats>div{background:var(--panel);padding:clamp(18px,2.6vw,26px) 14px;text-align:center;}
+.stat-num{font-family:var(--font-display);font-size:clamp(26px,3.2vw,36px);font-weight:600;line-height:1.15;margin:0;}
+.stat-num em{font-style:normal;color:var(--accent);}
+.stat-lbl{margin:8px 0 0;font-size:11px;color:var(--mist);letter-spacing:.22em;font-family:var(--font-mono);}
+@media (max-width:639px){.about-stats{grid-template-columns:repeat(2,minmax(0,1fr));}}
+
+/* 看片层：加载态 / 换图过渡 / 双击缩放 */
+.v-stage{overflow:hidden;}
+.v-figure{position:relative;}
+.v-img{transition:opacity .35s var(--ease),filter .35s var(--ease),transform .3s var(--ease);-webkit-user-drag:none;user-select:none;}
+.v-img.v-swap{opacity:.3;filter:blur(8px) saturate(.85);}
+.v-spinner{position:absolute;top:50%;left:50%;width:32px;height:32px;margin:-16px 0 0 -16px;border-radius:50%;border:2px solid rgba(237,231,218,.22);border-top-color:rgba(237,231,218,.9);animation:vspin .8s linear infinite;opacity:0;pointer-events:none;transition:opacity .25s var(--ease);z-index:2;}
+.v-figure.v-loading .v-spinner{opacity:1;}
+@keyframes vspin{to{transform:rotate(360deg);}}
+.v-img.v-zoom{transform:translate(var(--zx,0px),var(--zy,0px)) scale(2.2);cursor:zoom-out;}
+.v-img.dragging{transition:none;cursor:grabbing;}
+.v-stage.v-zoomed{touch-action:none;}
+
+/* 胶片条 */
+.v-strip{flex:1 1 100%;display:flex;gap:8px;justify-content:flex-start;align-items:center;overflow-x:auto;padding:4px 2px 8px;scrollbar-width:none;}
+.v-strip::-webkit-scrollbar{display:none;}
+.v-strip button{flex:none;width:58px;height:40px;border:1px solid rgba(237,231,218,.2);background:none;padding:0;border-radius:2px;overflow:hidden;cursor:pointer;opacity:.45;transition:opacity .22s var(--ease),border-color .22s var(--ease);}
+.v-strip button img{width:100%;height:100%;object-fit:cover;display:block;}
+.v-strip button:hover{opacity:.85;}
+.v-strip button[aria-current="true"]{opacity:1;border-color:var(--accent);}
+@media (min-width:1024px){.v-strip{justify-content:center;}}
+
+a.v-btn{text-decoration:none;}
 </style>
 </head>
 <body>
@@ -328,7 +428,7 @@ img[data-lqip="1"].lqip-done{filter:none;transform:none}
   <section class="hero" id="hero" data-od-id="hero" data-component="Hero">
     <div class="hero-stage">
       <figure class="hero-media">
-        <img id="heroImg" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABMNDhEODBMRDxEVFBMXHTAfHRoaHToqLCMwRT1JR0Q9Q0FMVm1dTFFoUkFDX4JgaHF1e3x7SlyGkIV3j214e3b/2wBDARQVFR0ZHTgfHzh2T0NPdnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnb/wAARCAASACADASIAAhEBAxEB/8QAGQAAAgMBAAAAAAAAAAAAAAAAAAIDBQYE/8QAJRAAAQUAAAQHAQAAAAAAAAAAAQACAwQRITFRkRIUIkFSYYGS/8QAFwEBAQEBAAAAAAAAAAAAAAAAAAMBAv/EABoRAQEAAgMAAAAAAAAAAAAAAAABAhFBUWH/2gAMAwEAAhEDEQA/AFhs1j7t/pWlK3XiIcc7rLO8vJmF0ZAz0lTwUmy4GXHN35N1Qyl7UmmhvXa8ricb3VbLahzAWD9CqbdGWIkNtRv45yIXHLWnA4Pa4/RSY87LfEbSd5qRrndT3QhUcHc4+Hme6TT1KEI1/9k=" data-full="photos/hero.jpg" data-lqip="1" alt="航拍视角的城市河道黄昏，金色阳光映在江面，有船只驶过" width="2560" height="1440" fetchpriority="high" decoding="async">
+        <img id="heroImg" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABMNDhEODBMRDxEVFBMXHTAfHRoaHToqLCMwRT1JR0Q9Q0FMVm1dTFFoUkFDX4JgaHF1e3x7SlyGkIV3j214e3b/2wBDARQVFR0ZHTgfHzh2T0NPdnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnb/wAARCAASACADASIAAhEBAxEB/8QAGQAAAgMBAAAAAAAAAAAAAAAAAAIDBQYE/8QAJRAAAQUAAAQHAQAAAAAAAAAAAQACAwQRITFRkRIUIkFSYYGS/8QAFwEBAQEBAAAAAAAAAAAAAAAAAAMBAv/EABoRAQEAAgMAAAAAAAAAAAAAAAABAhFBUWH/2gAMAwEAAhEDEQA/AFhs1j7t/pWlK3XiIcc7rLO8vJmF0ZAz0lTwUmy4GXHN35N1Qyl7UmmhvXa8ricb3VbLahzAWD9CqbdGWIkNtRv45yIXHLWnA4Pa4/RSY87LfEbSd5qRrndT3QhUcHc4+Hme6TT1KEI1/9k=" data-full="photos/hero.webp" data-original="photos/hero.jpg" data-lqip="1" alt="航拍视角的城市河道黄昏，金色阳光映在江面，有船只驶过" width="2560" height="1440" fetchpriority="high" decoding="async">
       </figure>
       <div class="hero-veil" aria-hidden="true"></div>
       <div class="hero-copy">
@@ -348,7 +448,7 @@ img[data-lqip="1"].lqip-done{filter:none;transform:none}
         <div>
           <p class="eyebrow">作品集 · WORKS</p>
           <h2>作品选</h2>
-          <p class="lead">城市、草木、人，还有猫。点击任意一幅进入全屏看片，可查看拍摄参数。</p>
+          <p class="lead">城市、草木、人，还有猫。点击任意一幅进入全屏看片，可查看拍摄参数；看片层支持 ← → 键盘、双击放大与原图下载。</p>
         </div>
         <p class="works-count" id="worksCount">共 14 幅</p>
       </div>
@@ -375,85 +475,85 @@ img[data-lqip="1"].lqip-done{filter:none;transform:none}
       <div class="masonry" id="masonry">
         <figure class="work reveal" data-id="p01" data-cat="city" data-color="color" data-title="流金之城" data-desc="黄昏把河道与城市镀成一片暖金。" data-exif="DJI FC8582 · 7mm · f/1.7 · ISO 210" style="--d:.0s">
           <button class="work-open" type="button" aria-label="全屏查看《流金之城》，城市摄影">
-            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABMNDhEODBMRDxEVFBMXHTAfHRoaHToqLCMwRT1JR0Q9Q0FMVm1dTFFoUkFDX4JgaHF1e3x7SlyGkIV3j214e3b/2wBDARQVFR0ZHTgfHzh2T0NPdnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnb/wAARCAASACADASIAAhEBAxEB/8QAGQAAAgMBAAAAAAAAAAAAAAAAAAIDBQYE/8QAJRAAAQUAAAQHAQAAAAAAAAAAAQACAwQRITFRkRIUIkFSYYGS/8QAFwEBAQEBAAAAAAAAAAAAAAAAAAMBAv/EABoRAQEAAgMAAAAAAAAAAAAAAAABAhFBUWH/2gAMAwEAAhEDEQA/AFhs1j7t/pWlK3XiIcc7rLO8vJmF0ZAz0lTwUmy4GXHN35N1Qyl7UmmhvXa8ricb3VbLahzAWD9CqbdGWIkNtRv45yIXHLWnA4Pa4/RSY87LfEbSd5qRrndT3QhUcHc4+Hme6TT1KEI1/9k=" data-full="photos/p01.jpg" data-lqip="1" alt="航拍视角的城市河道黄昏，金色阳光映在江面，有船只驶过" width="2560" height="1440" loading="lazy" decoding="async">
+            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABMNDhEODBMRDxEVFBMXHTAfHRoaHToqLCMwRT1JR0Q9Q0FMVm1dTFFoUkFDX4JgaHF1e3x7SlyGkIV3j214e3b/2wBDARQVFR0ZHTgfHzh2T0NPdnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnb/wAARCAASACADASIAAhEBAxEB/8QAGQAAAgMBAAAAAAAAAAAAAAAAAAIDBQYE/8QAJRAAAQUAAAQHAQAAAAAAAAAAAQACAwQRITFRkRIUIkFSYYGS/8QAFwEBAQEBAAAAAAAAAAAAAAAAAAMBAv/EABoRAQEAAgMAAAAAAAAAAAAAAAABAhFBUWH/2gAMAwEAAhEDEQA/AFhs1j7t/pWlK3XiIcc7rLO8vJmF0ZAz0lTwUmy4GXHN35N1Qyl7UmmhvXa8ricb3VbLahzAWD9CqbdGWIkNtRv45yIXHLWnA4Pa4/RSY87LfEbSd5qRrndT3QhUcHc4+Hme6TT1KEI1/9k=" data-thumb="photos/thumbs/p01.webp" data-full="photos/full/p01.webp" data-original="photos/p01.jpg" data-lqip="1" alt="航拍视角的城市河道黄昏，金色阳光映在江面，有船只驶过" width="2560" height="1440" loading="lazy" decoding="async">
           </button>
           <figcaption class="work-cap"><span class="work-title">流金之城</span><span class="work-meta">城市</span></figcaption>
         </figure>
         <figure class="work reveal" data-id="p02" data-cat="city" data-color="color" data-title="雨行" data-desc="雨中，撑伞的人走向林荫深处。" data-exif="OPPO Find X8 Ultra · 25mm · f/3.1 · 1/100 · ISO 250" style="--d:.04s">
           <button class="work-open" type="button" aria-label="全屏查看《雨行》，城市摄影">
-            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABMNDhEODBMRDxEVFBMXHTAfHRoaHToqLCMwRT1JR0Q9Q0FMVm1dTFFoUkFDX4JgaHF1e3x7SlyGkIV3j214e3b/2wBDARQVFR0ZHTgfHzh2T0NPdnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnb/wAARCAAvACADASIAAhEBAxEB/8QAGgAAAgMBAQAAAAAAAAAAAAAAAgQBAwUABv/EACYQAAICAgIBAwQDAAAAAAAAAAECAxEABBIhMQUTQSJRYXEjUrH/xAAWAQEBAQAAAAAAAAAAAAAAAAABAAL/xAAXEQEBAQEAAAAAAAAAAAAAAAAAAREx/9oADAMBAAIRAxEAPwDxpyDl00dFWAoOLH6wtSL3NhVIBAPYPisBwtWdmvvams0Us8FpxApSOj3mUFuv3ipdPrFaRqTxIBU/izf+Y5p6cYaWMNbtE3Z8XWLlgFPCyTRJyzQkvbI7+pSDjGaYf0/244i0iszoFog8QaxaWKaBeL65oeCvYx/fdV1eJ+CtD7YOlueYZj9Xw39hlYGSCqoQQ9115ydOThtK11lTS2vXjAVqa8mmh6hsGV2HKwfzgwn3oQQf5E8YkzX8k4UDlXoMRy+2Oh//2Q==" data-full="photos/p02.jpg" data-lqip="1" alt="雨天，撑伞的人走在树影浓密的步道上" width="1382" height="2048" loading="lazy" decoding="async">
+            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABMNDhEODBMRDxEVFBMXHTAfHRoaHToqLCMwRT1JR0Q9Q0FMVm1dTFFoUkFDX4JgaHF1e3x7SlyGkIV3j214e3b/2wBDARQVFR0ZHTgfHzh2T0NPdnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnb/wAARCAAvACADASIAAhEBAxEB/8QAGgAAAgMBAQAAAAAAAAAAAAAAAgQBAwUABv/EACYQAAICAgIBAwQDAAAAAAAAAAECAxEABBIhMQUTQSJRYXEjUrH/xAAWAQEBAQAAAAAAAAAAAAAAAAABAAL/xAAXEQEBAQEAAAAAAAAAAAAAAAAAAREx/9oADAMBAAIRAxEAPwDxpyDl00dFWAoOLH6wtSL3NhVIBAPYPisBwtWdmvvams0Us8FpxApSOj3mUFuv3ipdPrFaRqTxIBU/izf+Y5p6cYaWMNbtE3Z8XWLlgFPCyTRJyzQkvbI7+pSDjGaYf0/244i0iszoFog8QaxaWKaBeL65oeCvYx/fdV1eJ+CtD7YOlueYZj9Xw39hlYGSCqoQQ9115ydOThtK11lTS2vXjAVqa8mmh6hsGV2HKwfzgwn3oQQf5E8YkzX8k4UDlXoMRy+2Oh//2Q==" data-thumb="photos/thumbs/p02.webp" data-full="photos/full/p02.webp" data-original="photos/p02.jpg" data-lqip="1" alt="雨天，撑伞的人走在树影浓密的步道上" width="1382" height="2048" loading="lazy" decoding="async">
           </button>
           <figcaption class="work-cap"><span class="work-title">雨行</span><span class="work-meta">城市</span></figcaption>
         </figure>
         <figure class="work reveal" data-id="p03" data-cat="city" data-color="bw" data-title="街角" data-desc="灯箱与招牌层层叠叠的街角。" data-exif="OnePlus 12 · 6mm · f/1.6 · 1/75 · ISO 64" style="--d:.08s">
           <button class="work-open" type="button" aria-label="全屏查看《街角》，城市摄影">
-            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABMNDhEODBMRDxEVFBMXHTAfHRoaHToqLCMwRT1JR0Q9Q0FMVm1dTFFoUkFDX4JgaHF1e3x7SlyGkIV3j214e3b/2wBDARQVFR0ZHTgfHzh2T0NPdnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnb/wAARCAAlACADASIAAhEBAxEB/8QAGQAAAgMBAAAAAAAAAAAAAAAABAUAAgMG/8QAJxAAAgIBAwMEAgMAAAAAAAAAAQIDEQAEEiEiMZETFEFxMlFCYqH/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8A59UL2AO4Xn4/EYxGngN+pMr9ZI2gsR44xc1qzWKqhV38YUNXqjHtjQdPF7TXAwMn10kEkulgUbS3AC0fvn6xlJEpK1VEBiR2N4jVwdVcytIxdWKrxf7xlFq4IWbYrutilP8AEc2POAHMytM2wADjgfWU9OH2gcyqZDVpZvv47ZnFIDGQQCS17jdjNBJqPb7SIzEOk8YFzHGdK4rlX5IPftWGaZYRpZJXVAW6RuvxgpmiMc6Rxo6g2GsgVx2GWUK+iQFq53Ekf5gZNoxFQV+LrkYbp9Kgi2yW4az+q+MmTAGfSpulRenqq/mqGEQQrHGsZJYKrNz/AFF15yZMD//Z" data-full="photos/p03.jpg" data-lqip="1" alt="黑白街景，密集的中英文店招与灯箱" width="1781" height="2048" loading="lazy" decoding="async">
+            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABMNDhEODBMRDxEVFBMXHTAfHRoaHToqLCMwRT1JR0Q9Q0FMVm1dTFFoUkFDX4JgaHF1e3x7SlyGkIV3j214e3b/2wBDARQVFR0ZHTgfHzh2T0NPdnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnb/wAARCAAlACADASIAAhEBAxEB/8QAGQAAAgMBAAAAAAAAAAAAAAAABAUAAgMG/8QAJxAAAgIBAwMEAgMAAAAAAAAAAQIDEQAEEiEiMZETFEFxMlFCYqH/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8A59UL2AO4Xn4/EYxGngN+pMr9ZI2gsR44xc1qzWKqhV38YUNXqjHtjQdPF7TXAwMn10kEkulgUbS3AC0fvn6xlJEpK1VEBiR2N4jVwdVcytIxdWKrxf7xlFq4IWbYrutilP8AEc2POAHMytM2wADjgfWU9OH2gcyqZDVpZvv47ZnFIDGQQCS17jdjNBJqPb7SIzEOk8YFzHGdK4rlX5IPftWGaZYRpZJXVAW6RuvxgpmiMc6Rxo6g2GsgVx2GWUK+iQFq53Ekf5gZNoxFQV+LrkYbp9Kgi2yW4az+q+MmTAGfSpulRenqq/mqGEQQrHGsZJYKrNz/AFF15yZMD//Z" data-thumb="photos/thumbs/p03.webp" data-full="photos/full/p03.webp" data-original="photos/p03.jpg" data-lqip="1" alt="黑白街景，密集的中英文店招与灯箱" width="1781" height="2048" loading="lazy" decoding="async">
           </button>
           <figcaption class="work-cap"><span class="work-title">街角</span><span class="work-meta">城市</span></figcaption>
         </figure>
         <figure class="work reveal" data-id="p04" data-cat="city" data-color="bw" data-title="午后" data-desc="午后，两张透明椅子，一条流动的街。" data-exif="OPPO Find X9 Pro · 7mm · f/1.5 · 1/252 · ISO 50" style="--d:.12s">
           <button class="work-open" type="button" aria-label="全屏查看《午后》，城市摄影">
-            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABMNDhEODBMRDxEVFBMXHTAfHRoaHToqLCMwRT1JR0Q9Q0FMVm1dTFFoUkFDX4JgaHF1e3x7SlyGkIV3j214e3b/2wBDARQVFR0ZHTgfHzh2T0NPdnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnb/wAARCAApACADASIAAhEBAxEB/8QAGgAAAgMBAQAAAAAAAAAAAAAABAUBAwYAAv/EAC4QAAIBAwMDAQUJAAAAAAAAAAECAwAEERIhQQUTMTIUUWFxoSIzQlJTgZGx8P/EABQBAQAAAAAAAAAAAAAAAAAAAAD/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCmGbqkp1ToUBbtHUMbcg/T+aFggv7VpB342jj2UK4IJzj58/Snd8881rNPbxtLKFOkgMdx7uM0L0VgtkHuhiRj+mCccUFy3fVVEimyXTC2kM641DOM55qerTXEUduBEO4Q5woP2cAaRtyc13XrO/6nYxGx7rBGLMr4XUMbYHNMrN4Le1ihlllaRFAYsTueaAf28WlmisGLD8OMZOaCa+S9kbEQjcDJ0nzRF5CZ1UYGc7Vmp3aeCF7N2jmkfSqjyd8bn3UG2uLkR2eoNgBfI+VK/aHnaMSQnVjJkVtscZBqJpJEsEUnuNEpJP5iBSGwvL+5vo+zLrVt3U+FUf15oNFJKHXKEEfCk62kqX4mVlVF2VQo2HP++NFRff8A71cPW1BRdGSS0kjGQWUjI+ND9Ega3hOUKyN6s80xb0mvKeaD/9k=" data-full="photos/p04.jpg" data-lqip="1" alt="黑白街拍，两位男士坐在临街的透明椅子上" width="1581" height="2048" loading="lazy" decoding="async">
+            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABMNDhEODBMRDxEVFBMXHTAfHRoaHToqLCMwRT1JR0Q9Q0FMVm1dTFFoUkFDX4JgaHF1e3x7SlyGkIV3j214e3b/2wBDARQVFR0ZHTgfHzh2T0NPdnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnb/wAARCAApACADASIAAhEBAxEB/8QAGgAAAgMBAQAAAAAAAAAAAAAABAUBAwYAAv/EAC4QAAIBAwMDAQUJAAAAAAAAAAECAwAEERIhQQUTMTIUUWFxoSIzQlJTgZGx8P/EABQBAQAAAAAAAAAAAAAAAAAAAAD/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCmGbqkp1ToUBbtHUMbcg/T+aFggv7VpB342jj2UK4IJzj58/Snd8881rNPbxtLKFOkgMdx7uM0L0VgtkHuhiRj+mCccUFy3fVVEimyXTC2kM641DOM55qerTXEUduBEO4Q5woP2cAaRtyc13XrO/6nYxGx7rBGLMr4XUMbYHNMrN4Le1ihlllaRFAYsTueaAf28WlmisGLD8OMZOaCa+S9kbEQjcDJ0nzRF5CZ1UYGc7Vmp3aeCF7N2jmkfSqjyd8bn3UG2uLkR2eoNgBfI+VK/aHnaMSQnVjJkVtscZBqJpJEsEUnuNEpJP5iBSGwvL+5vo+zLrVt3U+FUf15oNFJKHXKEEfCk62kqX4mVlVF2VQo2HP++NFRff8A71cPW1BRdGSS0kjGQWUjI+ND9Ega3hOUKyN6s80xb0mvKeaD/9k=" data-thumb="photos/thumbs/p04.webp" data-full="photos/full/p04.webp" data-original="photos/p04.jpg" data-lqip="1" alt="黑白街拍，两位男士坐在临街的透明椅子上" width="1581" height="2048" loading="lazy" decoding="async">
           </button>
           <figcaption class="work-cap"><span class="work-title">午后</span><span class="work-meta">城市</span></figcaption>
         </figure>
         <figure class="work reveal" data-id="p05" data-cat="nature" data-color="color" data-title="浓荫" data-desc="仰头望去，老树把阳光筛成碎金。" data-exif="OPPO Find X9 Pro · 7mm · f/1.5 · 1/550 · ISO 50" style="--d:.0s">
           <button class="work-open" type="button" aria-label="全屏查看《浓荫》，自然摄影">
-            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABMNDhEODBMRDxEVFBMXHTAfHRoaHToqLCMwRT1JR0Q9Q0FMVm1dTFFoUkFDX4JgaHF1e3x7SlyGkIV3j214e3b/2wBDARQVFR0ZHTgfHzh2T0NPdnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnb/wAARCAArACADASIAAhEBAxEB/8QAGQAAAwEBAQAAAAAAAAAAAAAAAwQFAgAB/8QAJxAAAgEDAwMFAAMAAAAAAAAAAQIDABEhBBIxE1FhBSIyQXEjQvH/xAAXAQEBAQEAAAAAAAAAAAAAAAABAAID/8QAGhEBAQEAAwEAAAAAAAAAAAAAAAERAiExcf/aAAwDAQACEQMRAD8AhGWNANvyFiGGCK3HE3V3KCx24DUA7Z2QKpXADA8g88dqNLG2mCvDISVyw5sK53YGimogkTfEy7msuObfWaYDSyFpATdjlYzm1DOokaQdS8ioBa2LA9gaNppCjsun2yY3sA1lA+hxcnxT8SbOv8cd3HVGF2gggea6LUN0HRjdWIDrTSKJ5CsZKG4AJPP+UlKejrQ9wASQb58UbpEjdY0khTMhk9j/AEB5pmFlhisrEG5uc+79NK6JlMkjNnweTmq662NIUjfTKrFv6New5qtzpVPjVFDhRlHNjc58WNK+obdw2qoUMQLflHiAaFWOSx3HyaX1gART3Yk0z1rHmhIEoJv4A7nAp3VwGLVyRsfhZAb3xbmkdLiaMjkMLVQ1/v8AVHLZJRSf21HL1rjH/9k=" data-full="photos/p05.jpg" data-lqip="1" alt="仰拍一棵枝叶浓密的老树，阳光穿过树冠" width="1536" height="2048" loading="lazy" decoding="async">
+            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABMNDhEODBMRDxEVFBMXHTAfHRoaHToqLCMwRT1JR0Q9Q0FMVm1dTFFoUkFDX4JgaHF1e3x7SlyGkIV3j214e3b/2wBDARQVFR0ZHTgfHzh2T0NPdnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnb/wAARCAArACADASIAAhEBAxEB/8QAGQAAAwEBAQAAAAAAAAAAAAAAAwQFAgAB/8QAJxAAAgEDAwMFAAMAAAAAAAAAAQIDABEhBBIxE1FhBSIyQXEjQvH/xAAXAQEBAQEAAAAAAAAAAAAAAAABAAID/8QAGhEBAQEAAwEAAAAAAAAAAAAAAAERAiExcf/aAAwDAQACEQMRAD8AhGWNANvyFiGGCK3HE3V3KCx24DUA7Z2QKpXADA8g88dqNLG2mCvDISVyw5sK53YGimogkTfEy7msuObfWaYDSyFpATdjlYzm1DOokaQdS8ioBa2LA9gaNppCjsun2yY3sA1lA+hxcnxT8SbOv8cd3HVGF2gggea6LUN0HRjdWIDrTSKJ5CsZKG4AJPP+UlKejrQ9wASQb58UbpEjdY0khTMhk9j/AEB5pmFlhisrEG5uc+79NK6JlMkjNnweTmq662NIUjfTKrFv6New5qtzpVPjVFDhRlHNjc58WNK+obdw2qoUMQLflHiAaFWOSx3HyaX1gART3Yk0z1rHmhIEoJv4A7nAp3VwGLVyRsfhZAb3xbmkdLiaMjkMLVQ1/v8AVHLZJRSf21HL1rjH/9k=" data-thumb="photos/thumbs/p05.webp" data-full="photos/full/p05.webp" data-original="photos/p05.jpg" data-lqip="1" alt="仰拍一棵枝叶浓密的老树，阳光穿过树冠" width="1536" height="2048" loading="lazy" decoding="async">
           </button>
           <figcaption class="work-cap"><span class="work-title">浓荫</span><span class="work-meta">自然</span></figcaption>
         </figure>
         <figure class="work reveal" data-id="p06" data-cat="nature" data-color="color" data-title="疏枝" data-desc="落日沉进枝桠，剪影细密如网。" data-exif="OnePlus 13 · 14mm · f/2.6 · 1/1399 · ISO 64" style="--d:.04s">
           <button class="work-open" type="button" aria-label="全屏查看《疏枝》，自然摄影">
-            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABMNDhEODBMRDxEVFBMXHTAfHRoaHToqLCMwRT1JR0Q9Q0FMVm1dTFFoUkFDX4JgaHF1e3x7SlyGkIV3j214e3b/2wBDARQVFR0ZHTgfHzh2T0NPdnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnb/wAARCAAgACADASIAAhEBAxEB/8QAGQAAAgMBAAAAAAAAAAAAAAAAAwUBAgQG/8QAJhAAAgICAQMCBwAAAAAAAAAAAQIDEQAhBBJBUTFxEyIyYYGh8P/EABgBAAIDAAAAAAAAAAAAAAAAAAEEAgMF/8QAHBEAAgICAwAAAAAAAAAAAAAAAAECAwRBESEx/9oADAMBAAIRAxEAPwC8jOHPUTfvlS7AaJw08ck6fFUGwO+ZOokjqFMDsZlR7Q+wgLyGzkO4BoGyfGDk5BW0SgLsePvlwqrGHsktusl4AdgwLEzk7P00dHEHKlSWRmjIRvQi/wCrEDchhQLXfYnAvIHYUQDjEcfjZS7R6JnlnT5aUIe1Bb0T+s1xRHkaBIF/ms5VJHu0LD2Jwq8+eNCI55Bvz64ZUPTArVs//9k=" data-full="photos/p06.jpg" data-lqip="1" alt="落日下无叶老树的剪影，天空呈金橙色" width="2040" height="2048" loading="lazy" decoding="async">
+            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABMNDhEODBMRDxEVFBMXHTAfHRoaHToqLCMwRT1JR0Q9Q0FMVm1dTFFoUkFDX4JgaHF1e3x7SlyGkIV3j214e3b/2wBDARQVFR0ZHTgfHzh2T0NPdnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnb/wAARCAAgACADASIAAhEBAxEB/8QAGQAAAgMBAAAAAAAAAAAAAAAAAwUBAgQG/8QAJhAAAgICAQMCBwAAAAAAAAAAAQIDEQAhBBJBUTFxEyIyYYGh8P/EABgBAAIDAAAAAAAAAAAAAAAAAAEEAgMF/8QAHBEAAgICAwAAAAAAAAAAAAAAAAECAwRBESEx/9oADAMBAAIRAxEAPwC8jOHPUTfvlS7AaJw08ck6fFUGwO+ZOokjqFMDsZlR7Q+wgLyGzkO4BoGyfGDk5BW0SgLsePvlwqrGHsktusl4AdgwLEzk7P00dHEHKlSWRmjIRvQi/wCrEDchhQLXfYnAvIHYUQDjEcfjZS7R6JnlnT5aUIe1Bb0T+s1xRHkaBIF/ms5VJHu0LD2Jwq8+eNCI55Bvz64ZUPTArVs//9k=" data-thumb="photos/thumbs/p06.webp" data-full="photos/full/p06.webp" data-original="photos/p06.jpg" data-lqip="1" alt="落日下无叶老树的剪影，天空呈金橙色" width="2040" height="2048" loading="lazy" decoding="async">
           </button>
           <figcaption class="work-cap"><span class="work-title">疏枝</span><span class="work-meta">自然</span></figcaption>
         </figure>
         <figure class="work reveal" data-id="p07" data-cat="nature" data-color="bw" data-title="掠空" data-desc="三只鸟掠过云层与路灯之间。" data-exif="OnePlus 12 · 13mm · f/2.6 · 1/3661 · ISO 50" style="--d:.08s">
           <button class="work-open" type="button" aria-label="全屏查看《掠空》，自然摄影">
-            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABMNDhEODBMRDxEVFBMXHTAfHRoaHToqLCMwRT1JR0Q9Q0FMVm1dTFFoUkFDX4JgaHF1e3x7SlyGkIV3j214e3b/2wBDARQVFR0ZHTgfHzh2T0NPdnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnb/wAARCAAgACADASIAAhEBAxEB/8QAGAAAAwEBAAAAAAAAAAAAAAAAAwQFAgb/xAAjEAACAQQABwEBAAAAAAAAAAABAgADBBEhEhMxMlFxoQUi/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AHAXQ4IOIxz0SkCzL6zNuCg4SDgyXc0GGeI7gMP+iDoASdfXCsjEHJMWrNhymSSOoAziJvXU1OXzBxeIHbqDne/EFcUabj+jgwgcQVU6gSrqwRK9OsvUsKZPkHQ+4ma9iO4oocDriM3pZ7Woo7iuV9jY+iCa7L0RUQ5DKGA9wP/Z" data-full="photos/p07.jpg" data-lqip="1" alt="黑白画面，三只飞鸟掠过路灯与云层" width="2048" height="2020" loading="lazy" decoding="async">
+            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABMNDhEODBMRDxEVFBMXHTAfHRoaHToqLCMwRT1JR0Q9Q0FMVm1dTFFoUkFDX4JgaHF1e3x7SlyGkIV3j214e3b/2wBDARQVFR0ZHTgfHzh2T0NPdnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnb/wAARCAAgACADASIAAhEBAxEB/8QAGAAAAwEBAAAAAAAAAAAAAAAAAwQFAgb/xAAjEAACAQQABwEBAAAAAAAAAAABAgADBBEhEhMxMlFxoQUi/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AHAXQ4IOIxz0SkCzL6zNuCg4SDgyXc0GGeI7gMP+iDoASdfXCsjEHJMWrNhymSSOoAziJvXU1OXzBxeIHbqDne/EFcUabj+jgwgcQVU6gSrqwRK9OsvUsKZPkHQ+4ma9iO4oocDriM3pZ7Woo7iuV9jY+iCa7L0RUQ5DKGA9wP/Z" data-thumb="photos/thumbs/p07.webp" data-full="photos/full/p07.webp" data-original="photos/p07.jpg" data-lqip="1" alt="黑白画面，三只飞鸟掠过路灯与云层" width="2048" height="2020" loading="lazy" decoding="async">
           </button>
           <figcaption class="work-cap"><span class="work-title">掠空</span><span class="work-meta">自然</span></figcaption>
         </figure>
         <figure class="work reveal" data-id="p08" data-cat="portrait" data-color="color" data-title="暮誓" data-desc="逆光里的一个吻，头纱兜住金色的光。" data-exif="OPPO Find X9 Pro · 17mm · f/2.1 · 1/300 · ISO 50" style="--d:.12s">
           <button class="work-open" type="button" aria-label="全屏查看《暮誓》，人像摄影">
-            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABMNDhEODBMRDxEVFBMXHTAfHRoaHToqLCMwRT1JR0Q9Q0FMVm1dTFFoUkFDX4JgaHF1e3x7SlyGkIV3j214e3b/2wBDARQVFR0ZHTgfHzh2T0NPdnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnb/wAARCAArACADASIAAhEBAxEB/8QAGgABAAIDAQAAAAAAAAAAAAAABAMGAAIFB//EAC0QAAIBAwMCAwcFAAAAAAAAAAECAwAEEQUSQSExE1FhBhQVIkJScYGxwfDx/8QAFgEBAQEAAAAAAAAAAAAAAAAAAAEC/8QAGREBAQADAQAAAAAAAAAAAAAAAAECESEx/9oADAMBAAIRAxEAPwCwySRW0RlnkWNB3ZjgVD8VsvdDcxyGVAdvyKc58q5PtRNFNbRLv4DIByf8riNDNHYxMWBgdyygHnt/FW5MzFLfXE2pXHizKqkDCqB2FGWBlzVos9D8e0tZQ2CyDf5H+ikz6CoiLr3+2sba0qupkvNHLjCvGuB5YGKIssmwRliUDFgOM0rV5NrpECcIMUKMkr1NJ4PQtLlUaPGAwG2PAyfSt7TUFcOZHAVQDkmqdDdyPpxt1wxjO/r1JXnH4/aiC7I+o/pUkWs1kg3II5FEHRRSNVObvHAFGParPCpoJjHIrKSGByDW1zD18WJcI57Dg8ijV0LElo5FPUbc49aXnR//2Q==" data-full="photos/p08.jpg" data-lqip="1" alt="逆光中接吻的新人，头纱在光里扬起" width="1509" height="2048" loading="lazy" decoding="async">
+            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABMNDhEODBMRDxEVFBMXHTAfHRoaHToqLCMwRT1JR0Q9Q0FMVm1dTFFoUkFDX4JgaHF1e3x7SlyGkIV3j214e3b/2wBDARQVFR0ZHTgfHzh2T0NPdnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnb/wAARCAArACADASIAAhEBAxEB/8QAGgABAAIDAQAAAAAAAAAAAAAABAMGAAIFB//EAC0QAAIBAwMCAwcFAAAAAAAAAAECAwAEEQUSQSExE1FhBhQVIkJScYGxwfDx/8QAFgEBAQEAAAAAAAAAAAAAAAAAAAEC/8QAGREBAQADAQAAAAAAAAAAAAAAAAECESEx/9oADAMBAAIRAxEAPwCwySRW0RlnkWNB3ZjgVD8VsvdDcxyGVAdvyKc58q5PtRNFNbRLv4DIByf8riNDNHYxMWBgdyygHnt/FW5MzFLfXE2pXHizKqkDCqB2FGWBlzVos9D8e0tZQ2CyDf5H+ikz6CoiLr3+2sba0qupkvNHLjCvGuB5YGKIssmwRliUDFgOM0rV5NrpECcIMUKMkr1NJ4PQtLlUaPGAwG2PAyfSt7TUFcOZHAVQDkmqdDdyPpxt1wxjO/r1JXnH4/aiC7I+o/pUkWs1kg3II5FEHRRSNVObvHAFGParPCpoJjHIrKSGByDW1zD18WJcI57Dg8ijV0LElo5FPUbc49aXnR//2Q==" data-thumb="photos/thumbs/p08.webp" data-full="photos/full/p08.webp" data-original="photos/p08.jpg" data-lqip="1" alt="逆光中接吻的新人，头纱在光里扬起" width="1509" height="2048" loading="lazy" decoding="async">
           </button>
           <figcaption class="work-cap"><span class="work-title">暮誓</span><span class="work-meta">人像</span></figcaption>
         </figure>
         <figure class="work reveal" data-id="p09" data-cat="portrait" data-color="color" data-title="囍" data-desc="草坡上，他们把大红囍字举向天空。" data-exif="OPPO Find X9 Pro · 17mm · f/2.1 · 1/1538 · ISO 50" style="--d:.16s">
           <button class="work-open" type="button" aria-label="全屏查看《囍》，人像摄影">
-            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABMNDhEODBMRDxEVFBMXHTAfHRoaHToqLCMwRT1JR0Q9Q0FMVm1dTFFoUkFDX4JgaHF1e3x7SlyGkIV3j214e3b/2wBDARQVFR0ZHTgfHzh2T0NPdnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnb/wAARCAAYACADASIAAhEBAxEB/8QAGQAAAgMBAAAAAAAAAAAAAAAAAAQCAwUG/8QAJhAAAgEDAwMEAwAAAAAAAAAAAQIDAAQRBRIhBjFhIkFCcVGRsf/EABYBAQEBAAAAAAAAAAAAAAAAAAACAf/EABYRAQEBAAAAAAAAAAAAAAAAAAABEf/aAAwDAQACEQMRAD8A39PsrVrYO6Izfkr2pW4tYTIVEaMPYMOKhHeCFdquxH1Qbx2PojB8k1MlVsWxQJEgEKiPwO1TfgHkViS66UV1ljJZZSmVU7cbsfvFPtG2c7CBVMc6vUMvzgQ/RIqxeo2Uc24z4aiijCrapG9tJA8LFZJjKfV25zimY9f2rtdJHx8mYE/yiig//9k=" data-full="photos/p09.jpg" data-lqip="1" alt="草坡上新人举起红色的囍字，阳光从背后照来" width="2048" height="1535" loading="lazy" decoding="async">
+            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABMNDhEODBMRDxEVFBMXHTAfHRoaHToqLCMwRT1JR0Q9Q0FMVm1dTFFoUkFDX4JgaHF1e3x7SlyGkIV3j214e3b/2wBDARQVFR0ZHTgfHzh2T0NPdnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnb/wAARCAAYACADASIAAhEBAxEB/8QAGQAAAgMBAAAAAAAAAAAAAAAAAAQCAwUG/8QAJhAAAgEDAwMEAwAAAAAAAAAAAQIDAAQRBRIhBjFhIkFCcVGRsf/EABYBAQEBAAAAAAAAAAAAAAAAAAACAf/EABYRAQEBAAAAAAAAAAAAAAAAAAABEf/aAAwDAQACEQMRAD8A39PsrVrYO6Izfkr2pW4tYTIVEaMPYMOKhHeCFdquxH1Qbx2PojB8k1MlVsWxQJEgEKiPwO1TfgHkViS66UV1ljJZZSmVU7cbsfvFPtG2c7CBVMc6vUMvzgQ/RIqxeo2Uc24z4aiijCrapG9tJA8LFZJjKfV25zimY9f2rtdJHx8mYE/yiig//9k=" data-thumb="photos/thumbs/p09.webp" data-full="photos/full/p09.webp" data-original="photos/p09.jpg" data-lqip="1" alt="草坡上新人举起红色的囍字，阳光从背后照来" width="2048" height="1535" loading="lazy" decoding="async">
           </button>
           <figcaption class="work-cap"><span class="work-title">囍</span><span class="work-meta">人像</span></figcaption>
         </figure>
         <figure class="work reveal" data-id="p10" data-cat="portrait" data-color="bw" data-title="光之下" data-desc="一束侧光，落在婚纱与新郎的肩上。" data-exif="OPPO Find X9 Pro · 17mm · f/2.1 · 1/165 · ISO 50" style="--d:.2s">
           <button class="work-open" type="button" aria-label="全屏查看《光之下》，人像摄影">
-            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABMNDhEODBMRDxEVFBMXHTAfHRoaHToqLCMwRT1JR0Q9Q0FMVm1dTFFoUkFDX4JgaHF1e3x7SlyGkIV3j214e3b/2wBDARQVFR0ZHTgfHzh2T0NPdnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnb/wAARCAArACADASIAAhEBAxEB/8QAGgAAAQUBAAAAAAAAAAAAAAAABAABAgUGA//EACwQAAIBAwMCBAUFAAAAAAAAAAECAwAEEQUSITFxE0FRoQYUIjKBFUJSYcH/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AxNSKMAG2nB6HHWpRR+LIiKeWIA48zWh1+2EGoraojtFFEkSlf5AencHPegzZUjqCKfb9G7+8VYy28U0yqZFjKpyqgnp5d+fah5Y7dXIhkkdPVhig6aLA8+rWiQp4j+KrbScAgHJ5/Fav4ks914rRAiQqST6nGc0Folr+iTyzSlGmZdq452g9f8o+81GOe+hJ+xWAPbGKDIwMnzviyn6Y+SB1Y+Q/J9qFLsRgg9fSi7+3WK6uQn7HDL2NMyy2rgy8bhkZBHYjig7DV2Maq6ZIGN2aeO/V2O9TnyIYCqulQHXkqTzblIUkYLZzkVMaheOiwm+Lon2q53L71W0qD//Z" data-full="photos/p10.jpg" data-lqip="1" alt="黑白婚礼照，一束光落在婚纱与新郎肩上" width="1538" height="2048" loading="lazy" decoding="async">
+            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABMNDhEODBMRDxEVFBMXHTAfHRoaHToqLCMwRT1JR0Q9Q0FMVm1dTFFoUkFDX4JgaHF1e3x7SlyGkIV3j214e3b/2wBDARQVFR0ZHTgfHzh2T0NPdnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnb/wAARCAArACADASIAAhEBAxEB/8QAGgAAAQUBAAAAAAAAAAAAAAAABAABAgUGA//EACwQAAIBAwMCBAUFAAAAAAAAAAECAwAEEQUSITFxE0FRoQYUIjKBFUJSYcH/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AxNSKMAG2nB6HHWpRR+LIiKeWIA48zWh1+2EGoraojtFFEkSlf5AencHPegzZUjqCKfb9G7+8VYy28U0yqZFjKpyqgnp5d+fah5Y7dXIhkkdPVhig6aLA8+rWiQp4j+KrbScAgHJ5/Fav4ks914rRAiQqST6nGc0Folr+iTyzSlGmZdq452g9f8o+81GOe+hJ+xWAPbGKDIwMnzviyn6Y+SB1Y+Q/J9qFLsRgg9fSi7+3WK6uQn7HDL2NMyy2rgy8bhkZBHYjig7DV2Maq6ZIGN2aeO/V2O9TnyIYCqulQHXkqTzblIUkYLZzkVMaheOiwm+Lon2q53L71W0qD//Z" data-thumb="photos/thumbs/p10.webp" data-full="photos/full/p10.webp" data-original="photos/p10.jpg" data-lqip="1" alt="黑白婚礼照，一束光落在婚纱与新郎肩上" width="1538" height="2048" loading="lazy" decoding="async">
           </button>
           <figcaption class="work-cap"><span class="work-title">光之下</span><span class="work-meta">人像</span></figcaption>
         </figure>
         <figure class="work reveal" data-id="p11" data-cat="portrait" data-color="bw" data-title="临水" data-desc="水边的剪影，望向对岸的微光。" data-exif="OPPO Find X9 Pro · 7mm · f/1.5 · 1/7326 · ISO 50" style="--d:.24s">
           <button class="work-open" type="button" aria-label="全屏查看《临水》，人像摄影">
-            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABMNDhEODBMRDxEVFBMXHTAfHRoaHToqLCMwRT1JR0Q9Q0FMVm1dTFFoUkFDX4JgaHF1e3x7SlyGkIV3j214e3b/2wBDARQVFR0ZHTgfHzh2T0NPdnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnb/wAARCAArACADASIAAhEBAxEB/8QAGgAAAgMBAQAAAAAAAAAAAAAABQYAAwQCAf/EACoQAAEEAQIEBgIDAAAAAAAAAAEAAgMEERIhBRMxQQYiI1FhcTJygZHw/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AJXhO2cLeI2Mb5yAOm5wssDgOgCD+KI5X8iQEuiGWkDs73/3sgY9XLJ0NaFiszPcehx8FU8Ht8yjHC/yzRsGQ7qR2Kunf9fwEA1jeIn8bEA+dCEWrc1l/rSag04AGw/pGY5NsZxlArEbq7tL2kEHGex+Qg7rNsPkJrMke5oydAJICY4aN6xRZYkn5TnZ9N8O43+0L8MWhFxTGQA5hG4690027JczAJH0UCIy/Owg5yPYhc2rjrLWBwA0knZUZUcUF1GZte5FK/OlhycI4/jtaRo2e0/ql1vVekBB/9k=" data-full="photos/p11.jpg" data-lqip="1" alt="黑白剪影，水边的人望向对岸" width="1538" height="2048" loading="lazy" decoding="async">
+            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABMNDhEODBMRDxEVFBMXHTAfHRoaHToqLCMwRT1JR0Q9Q0FMVm1dTFFoUkFDX4JgaHF1e3x7SlyGkIV3j214e3b/2wBDARQVFR0ZHTgfHzh2T0NPdnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnb/wAARCAArACADASIAAhEBAxEB/8QAGgAAAgMBAQAAAAAAAAAAAAAABQYAAwQCAf/EACoQAAEEAQIEBgIDAAAAAAAAAAEAAgMEERIhBRMxQQYiI1FhcTJygZHw/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AJXhO2cLeI2Mb5yAOm5wssDgOgCD+KI5X8iQEuiGWkDs73/3sgY9XLJ0NaFiszPcehx8FU8Ht8yjHC/yzRsGQ7qR2Kunf9fwEA1jeIn8bEA+dCEWrc1l/rSag04AGw/pGY5NsZxlArEbq7tL2kEHGex+Qg7rNsPkJrMke5oydAJICY4aN6xRZYkn5TnZ9N8O43+0L8MWhFxTGQA5hG4690027JczAJH0UCIy/Owg5yPYhc2rjrLWBwA0knZUZUcUF1GZte5FK/OlhycI4/jtaRo2e0/ql1vVekBB/9k=" data-thumb="photos/thumbs/p11.webp" data-full="photos/full/p11.webp" data-original="photos/p11.jpg" data-lqip="1" alt="黑白剪影，水边的人望向对岸" width="1538" height="2048" loading="lazy" decoding="async">
           </button>
           <figcaption class="work-cap"><span class="work-title">临水</span><span class="work-meta">人像</span></figcaption>
         </figure>
         <figure class="work reveal" data-id="p12" data-cat="animal" data-color="color" data-title="探绿" data-desc="黑白的猫探进草丛，叶尖还挂在嘴边。" data-exif="Nikon Z50 II · NIKKOR Z DX 16-50mm · 50mm · f/6.3 · 1/100 · ISO 400" style="--d:.28s">
           <button class="work-open" type="button" aria-label="全屏查看《探绿》，动物摄影">
-            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABMNDhEODBMRDxEVFBMXHTAfHRoaHToqLCMwRT1JR0Q9Q0FMVm1dTFFoUkFDX4JgaHF1e3x7SlyGkIV3j214e3b/2wBDARQVFR0ZHTgfHzh2T0NPdnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnb/wAARCAApACADASIAAhEBAxEB/8QAGgAAAgMBAQAAAAAAAAAAAAAAAwQAAgUBBv/EACgQAAIBAwMDBAIDAAAAAAAAAAECEQADBBIhQRMxgUJRYXEFIsHR4f/EABYBAAMAAAAAAAAAAAAAAAAAAAECA//EABgRAQEBAQEAAAAAAAAAAAAAAAABEQIh/9oADAMBAAIRAxEAPwDIbKykJFssWLk7nn+6rfyMhrdssp1aRJjsOB906oMrrtjTvvPY09iXcfH1XTZ17bMTup7SPap89230k9YJ67KWESwIJZuKht3YDFkA40zTeZhrauLeEdC4Y0loI8c/dS6gXcRAHIqu6cJr6rp1urECdS+r43pzFz5yER1ADrAEbD/axrab/wAnvQrt+L5jgiPFT4mDkj0X51FGJaYAFuoII9qyydW5au5uWt7DtQ0wQQOfNVEMoO+9UAsHEx7d6HCqX129U7ggwQa4vq+6K3YUsg2rXLd+xjolwIVuCRpIJ80UjphRrVpUH9ePilkoxpgf/9k=" data-full="photos/p12.jpg" data-lqip="1" alt="黑白花色的猫探进绿色草丛，叶尖挂在嘴边" width="1605" height="2048" loading="lazy" decoding="async">
+            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABMNDhEODBMRDxEVFBMXHTAfHRoaHToqLCMwRT1JR0Q9Q0FMVm1dTFFoUkFDX4JgaHF1e3x7SlyGkIV3j214e3b/2wBDARQVFR0ZHTgfHzh2T0NPdnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnb/wAARCAApACADASIAAhEBAxEB/8QAGgAAAgMBAQAAAAAAAAAAAAAAAwQAAgUBBv/EACgQAAIBAwMDBAIDAAAAAAAAAAECEQADBBIhQRMxgUJRYXEFIsHR4f/EABYBAAMAAAAAAAAAAAAAAAAAAAECA//EABgRAQEBAQEAAAAAAAAAAAAAAAABEQIh/9oADAMBAAIRAxEAPwDIbKykJFssWLk7nn+6rfyMhrdssp1aRJjsOB906oMrrtjTvvPY09iXcfH1XTZ17bMTup7SPap89230k9YJ67KWESwIJZuKht3YDFkA40zTeZhrauLeEdC4Y0loI8c/dS6gXcRAHIqu6cJr6rp1urECdS+r43pzFz5yER1ADrAEbD/axrab/wAnvQrt+L5jgiPFT4mDkj0X51FGJaYAFuoII9qyydW5au5uWt7DtQ0wQQOfNVEMoO+9UAsHEx7d6HCqX129U7ggwQa4vq+6K3YUsg2rXLd+xjolwIVuCRpIJ80UjphRrVpUH9ePilkoxpgf/9k=" data-thumb="photos/thumbs/p12.webp" data-full="photos/full/p12.webp" data-original="photos/p12.jpg" data-lqip="1" alt="黑白花色的猫探进绿色草丛，叶尖挂在嘴边" width="1605" height="2048" loading="lazy" decoding="async">
           </button>
           <figcaption class="work-cap"><span class="work-title">探绿</span><span class="work-meta">动物</span></figcaption>
         </figure>
         <figure class="work reveal" data-id="p13" data-cat="animal" data-color="color" data-title="小憩" data-desc="在白椅子上蜷成一团，睡得很沉。" data-exif="OnePlus 12 · 6mm · f/1.6 · 1/60 · ISO 2500" style="--d:.32s">
           <button class="work-open" type="button" aria-label="全屏查看《小憩》，动物摄影">
-            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABMNDhEODBMRDxEVFBMXHTAfHRoaHToqLCMwRT1JR0Q9Q0FMVm1dTFFoUkFDX4JgaHF1e3x7SlyGkIV3j214e3b/2wBDARQVFR0ZHTgfHzh2T0NPdnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnb/wAARCAArACADASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAABQQDAgH/xAArEAACAQMDAgUDBQAAAAAAAAABAgMABBEFEiEiMQYTUWGBMkHRU3GRobH/xAAWAQEBAQAAAAAAAAAAAAAAAAADAgD/xAAcEQEBAAICAwAAAAAAAAAAAAABABFBAiEDEjH/2gAMAwEAAhEDEQA/AIBpel2rBbq/a4k/St1yT/GaTtLG3eBjHYtaHsjP9R9z7fvR58QpGfJ0bTkiz2JXk/A/NRSvql6fNll3KOeJFCj4BoU5P1lE1KncjFWBDKcEVsHNGxPMJ2a53ZkGeTkDHb+qr31qrPSUgtrOFkAEjpl2+59qN1ETSTTCCIKgG7AHJzVKRixRYxuZVOTu7898VvG0N2gy+wkkA+o9KrGHMWdXlhphSWOZLlHUqNwyeKQuNIuFJaDDoeQoPIFVWUVmAiBdzDgH7mlXKQxl5GAVRyaD2RmCASxGpWas7bZ0zHIR6j8jB+axi8PzxHEU64znqXNVaKxGozID0tFuI9SDgf7TTdKMR3ApvJ0w8OyHTTUsbbfPdFXHJYLyaPl1OS5tWt3APIIbPbFcX80ktyRI5YDB5rhI0ZepQaMNyZv/2Q==" data-full="photos/p13.jpg" data-lqip="1" alt="蜷在白色椅子上的猫，蓝眼睛眯着" width="1537" height="2048" loading="lazy" decoding="async">
+            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABMNDhEODBMRDxEVFBMXHTAfHRoaHToqLCMwRT1JR0Q9Q0FMVm1dTFFoUkFDX4JgaHF1e3x7SlyGkIV3j214e3b/2wBDARQVFR0ZHTgfHzh2T0NPdnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnb/wAARCAArACADASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAABQQDAgH/xAArEAACAQMDAgUDBQAAAAAAAAABAgMABBEFEiEiMQYTUWGBMkHRU3GRobH/xAAWAQEBAQAAAAAAAAAAAAAAAAADAgD/xAAcEQEBAAICAwAAAAAAAAAAAAABABFBAiEDEjH/2gAMAwEAAhEDEQA/AIBpel2rBbq/a4k/St1yT/GaTtLG3eBjHYtaHsjP9R9z7fvR58QpGfJ0bTkiz2JXk/A/NRSvql6fNll3KOeJFCj4BoU5P1lE1KncjFWBDKcEVsHNGxPMJ2a53ZkGeTkDHb+qr31qrPSUgtrOFkAEjpl2+59qN1ETSTTCCIKgG7AHJzVKRixRYxuZVOTu7898VvG0N2gy+wkkA+o9KrGHMWdXlhphSWOZLlHUqNwyeKQuNIuFJaDDoeQoPIFVWUVmAiBdzDgH7mlXKQxl5GAVRyaD2RmCASxGpWas7bZ0zHIR6j8jB+axi8PzxHEU64znqXNVaKxGozID0tFuI9SDgf7TTdKMR3ApvJ0w8OyHTTUsbbfPdFXHJYLyaPl1OS5tWt3APIIbPbFcX80ktyRI5YDB5rhI0ZepQaMNyZv/2Q==" data-thumb="photos/thumbs/p13.webp" data-full="photos/full/p13.webp" data-original="photos/p13.jpg" data-lqip="1" alt="蜷在白色椅子上的猫，蓝眼睛眯着" width="1537" height="2048" loading="lazy" decoding="async">
           </button>
           <figcaption class="work-cap"><span class="work-title">小憩</span><span class="work-meta">动物</span></figcaption>
         </figure>
         <figure class="work reveal" data-id="p14" data-cat="animal" data-color="color" data-title="凝视" data-desc="抵近去看一只金色的眼睛，里面藏着一扇窗。" data-exif="OnePlus 12 · 13mm · f/2.6 · 1/50 · ISO 1250" style="--d:.36s">
           <button class="work-open" type="button" aria-label="全屏查看《凝视》，动物摄影">
-            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABMNDhEODBMRDxEVFBMXHTAfHRoaHToqLCMwRT1JR0Q9Q0FMVm1dTFFoUkFDX4JgaHF1e3x7SlyGkIV3j214e3b/2wBDARQVFR0ZHTgfHzh2T0NPdnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnb/wAARCAArACADASIAAhEBAxEB/8QAGAAAAwEBAAAAAAAAAAAAAAAAAwQFBgL/xAAnEAACAQMDAwMFAAAAAAAAAAABAgMABBESITEFE0EGUWEiJDJxcv/EABgBAAMBAQAAAAAAAAAAAAAAAAABAgME/8QAGREBAAMBAQAAAAAAAAAAAAAAAQACETEh/9oADAMBAAIRAxEAPwBlH+5JOMDYUaS7VjoTdRyazl51GS1dBpBI3I4zTNh1sy6VlhRSTgEDauYqhk1U7LsROnGTjGxxRgx21HJ96SF5ExILaSvIJ8113AxypyRzVci7M76hRe8ukZPFcXloR0hHi30nVsPHmq1tbw3iCSUambjO+Kajt47S37MiMYR+JG5FJtY9rFaumTNdI7kxlIJCjAA5HzVzpts6xzHUchiFyeOKNAllHA0VoBLI7ZCqhXf5yNqO7JYWukuC3JPknzUl21lfCFTInYqImxmqTXIUY05pKADK/qinYEj2NHsp7CSXTgARqB/NRr2eWbOp8YO49qNOT3CvjNQ7l2YsWZj9WNzTxesDyf/Z" data-full="photos/p14.jpg" data-lqip="1" alt="猫眼睛的金色微距特写，瞳孔是一条竖线" width="1540" height="2048" loading="lazy" decoding="async">
+            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABMNDhEODBMRDxEVFBMXHTAfHRoaHToqLCMwRT1JR0Q9Q0FMVm1dTFFoUkFDX4JgaHF1e3x7SlyGkIV3j214e3b/2wBDARQVFR0ZHTgfHzh2T0NPdnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnb/wAARCAArACADASIAAhEBAxEB/8QAGAAAAwEBAAAAAAAAAAAAAAAAAwQFBgL/xAAnEAACAQMDAwMFAAAAAAAAAAABAgMABBESITEFE0EGUWEiJDJxcv/EABgBAAMBAQAAAAAAAAAAAAAAAAABAgME/8QAGREBAAMBAQAAAAAAAAAAAAAAAQACETEh/9oADAMBAAIRAxEAPwBlH+5JOMDYUaS7VjoTdRyazl51GS1dBpBI3I4zTNh1sy6VlhRSTgEDauYqhk1U7LsROnGTjGxxRgx21HJ96SF5ExILaSvIJ8113AxypyRzVci7M76hRe8ukZPFcXloR0hHi30nVsPHmq1tbw3iCSUambjO+Kajt47S37MiMYR+JG5FJtY9rFaumTNdI7kxlIJCjAA5HzVzpts6xzHUchiFyeOKNAllHA0VoBLI7ZCqhXf5yNqO7JYWukuC3JPknzUl21lfCFTInYqImxmqTXIUY05pKADK/qinYEj2NHsp7CSXTgARqB/NRr2eWbOp8YO49qNOT3CvjNQ7l2YsWZj9WNzTxesDyf/Z" data-thumb="photos/thumbs/p14.webp" data-full="photos/full/p14.webp" data-original="photos/p14.jpg" data-lqip="1" alt="猫眼睛的金色微距特写，瞳孔是一条竖线" width="1540" height="2048" loading="lazy" decoding="async">
           </button>
           <figcaption class="work-cap"><span class="work-title">凝视</span><span class="work-meta">动物</span></figcaption>
         </figure>
@@ -465,7 +565,7 @@ img[data-lqip="1"].lqip-done{filter:none;transform:none}
   <!-- 语录 -->
   <section class="sect narrative" id="narrative" data-od-id="narrative" data-component="Narrative Quote">
     <figure class="quote-wrap reveal">
-      <svg class="quote-ink" viewBox="0 0 120 30" aria-hidden="true"><path d="M4 20C28 8 52 6 78 12c14 3 26 8 38 12"></path></svg>
+      <svg class="quote-ink" viewBox="0 0 120 30" aria-hidden="true"><path d="M4 20C28 8 52 6 78 12c14 3 26 8 38 12" pathLength="1"></path></svg>
       <blockquote class="quote-text">
         <span>影像的意义，</span>
         <span>在于把一个尽兴的瞬间，</span>
@@ -477,7 +577,14 @@ img[data-lqip="1"].lqip-done{filter:none;transform:none}
 
   <!-- 关于 -->
   <section class="sect about" id="about" data-od-id="about" data-component="About">
-    <div class="wrap about-grid">
+    <div class="wrap">
+      <div class="about-stats reveal" id="aboutStats" role="list" aria-label="作品集数据">
+        <div role="listitem"><p class="stat-num"><span data-count="14">0</span></p><p class="stat-lbl">幅作品 · WORKS</p></div>
+        <div role="listitem"><p class="stat-num"><span data-count="4">0</span></p><p class="stat-lbl">个题材 · GENRES</p></div>
+        <div role="listitem"><p class="stat-num"><span data-count="5">0</span></p><p class="stat-lbl">台器材 · CAMERAS</p></div>
+        <div role="listitem"><p class="stat-num"><em>∞</em></p><p class="stat-lbl">持续更新 · MORE</p></div>
+      </div>
+      <div class="about-grid">
       <div class="about-intro reveal">
         <p class="eyebrow">关于 · ABOUT</p>
         <h2>纯白鸢尾花</h2>
@@ -495,6 +602,7 @@ img[data-lqip="1"].lqip-done{filter:none;transform:none}
         </ul>
         <p class="gear-note">不同器材拍的放在一起，各有各的脾气。</p>
       </aside>
+      </div>
     </div>
   </section>
 </main>
@@ -543,11 +651,12 @@ img[data-lqip="1"].lqip-done{filter:none;transform:none}
     </button>
   </div>
   <div class="v-meta">
+    <div class="v-strip" id="vStrip" role="group" aria-label="作品缩略图快速导航"></div>
     <div class="v-info">
       <h3 class="v-title" id="viewerTitle">流金之城</h3>
       <p class="v-sub" id="viewerSub">城市 · 彩色 · 摄影：纯白鸢尾花</p>
       <p class="v-exif" id="viewerExif">DJI FC8582 · 7mm · f/1.7 · ISO 210</p>
-      <p class="v-kbd">← → 切换 · Esc 关闭</p>
+      <p class="v-kbd">← → 切换 · 双击放大 · Esc 关闭</p>
     </div>
     <div class="v-actions">
       <button class="v-btn" id="btnLike" type="button" aria-pressed="false" aria-label="点赞">
@@ -562,9 +671,18 @@ img[data-lqip="1"].lqip-done{filter:none;transform:none}
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M12 14V3M8 7l4-4 4 4"></path></svg>
         <span class="lbl">分享</span>
       </button>
+      <a class="v-btn" id="btnDownload" href="photos/p01.jpg" download="光年留影.jpg" aria-label="下载原图">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"></path></svg>
+        <span class="lbl">原图</span>
+      </a>
     </div>
   </div>
 </div>
+
+<div class="scroll-progress" aria-hidden="true"><b id="progressBar"></b></div>
+<button class="to-top" id="toTop" type="button" aria-label="回到顶部">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"></path></svg>
+</button>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -629,7 +747,18 @@ img[data-lqip="1"].lqip-done{filter:none;transform:none}
     works.forEach(function(f){
       var ok = match(f);
       f.hidden = !ok;
-      if (ok){ n++; f.classList.add('in'); }
+      if (ok){
+        n++;
+        f.classList.add('in');
+        if (!f.classList.contains('pop')){
+          f.classList.add('pop');
+        } else {
+          f.classList.remove('pop');
+          void f.offsetWidth;
+          f.classList.add('pop');
+        }
+        f.style.animationDelay = Math.min(n * 36, 320) + 'ms';
+      }
     });
     countEl.textContent = '共 ' + n + ' 幅';
     emptyEl.hidden = n > 0;
@@ -661,6 +790,9 @@ img[data-lqip="1"].lqip-done{filter:none;transform:none}
   var btnClose = $('#btnClose');
   var btnPrev = $('#btnPrev');
   var btnNext = $('#btnNext');
+  var btnDownload = $('#btnDownload');
+  var vStrip = $('#vStrip');
+  var vfig = document.querySelector('.v-figure');
   var vlist = [];
   var vIndex = 0;
   var lastFocus = null;
@@ -672,7 +804,24 @@ img[data-lqip="1"].lqip-done{filter:none;transform:none}
     var f = currentWork();
     if (!f) { return; }
     var src = $('img', f);
-    vimg.src = src.getAttribute('data-full') || src.src;
+    var d = f.dataset;
+    var fullUrl = src.getAttribute('data-full') || src.getAttribute('data-original') || src.src;
+    var thumbUrl = src.getAttribute('data-thumb') || src.src;
+    vzoomReset();
+    if (vimg.getAttribute('data-current') !== fullUrl){
+      vimg.setAttribute('data-current', fullUrl);
+      vimg.classList.add('v-swap');
+      vfig.classList.add('v-loading');
+      vimg.src = thumbUrl;
+      var pre = new Image();
+      pre.onload = pre.onerror = function(){
+        if (vimg.getAttribute('data-current') !== fullUrl) { return; }
+        vimg.src = fullUrl;
+        vimg.classList.remove('v-swap');
+        vfig.classList.remove('v-loading');
+      };
+      pre.src = fullUrl;
+    }
     vimg.alt = src.alt;
     var d = f.dataset;
     vtitle.textContent = d.title;
@@ -681,6 +830,10 @@ img[data-lqip="1"].lqip-done{filter:none;transform:none}
     vcount.textContent = (vIndex + 1) + ' / ' + vlist.length;
     btnLike.setAttribute('aria-pressed', String(has(liked, d.id)));
     btnSave.setAttribute('aria-pressed', String(has(saved, d.id)));
+    if (btnDownload){
+      btnDownload.href = src.getAttribute('data-original') || fullUrl;
+      btnDownload.setAttribute('download', '光年留影-' + d.title + '.jpg');
+    }
     try { history.replaceState(null, '', '#' + d.id); } catch(e){}
     var nxt = vlist[(vIndex + 1) % vlist.length];
     var prv = vlist[(vIndex - 1 + vlist.length) % vlist.length];
@@ -691,6 +844,7 @@ img[data-lqip="1"].lqip-done{filter:none;transform:none}
         im.src = si.getAttribute('data-full') || si.src;
       }
     });
+    paintStrip();
   }
   function openViewer(id){
     vlist = visibleWorks();
@@ -700,6 +854,7 @@ img[data-lqip="1"].lqip-done{filter:none;transform:none}
     if (i === -1){ return; }
     vIndex = i;
     lastFocus = document.activeElement;
+    buildStrip();
     showWork();
     viewer.hidden = false;
     document.documentElement.classList.add('vlock');
@@ -747,6 +902,10 @@ img[data-lqip="1"].lqip-done{filter:none;transform:none}
     var f = currentWork();
     if (!f){ return; }
     var url = location.href.split('#')[0] + '#' + f.dataset.id;
+    if (navigator.share && matchMedia('(pointer: coarse)').matches){
+      navigator.share({ title: '光年留影 · ' + f.dataset.title, url: url }).catch(function(){});
+      return;
+    }
     function ok(){ toast('已复制作品链接'); }
     function fail(){
       var ta = document.createElement('textarea');
@@ -767,7 +926,9 @@ img[data-lqip="1"].lqip-done{filter:none;transform:none}
     if (viewer.hidden){ return; }
     if (e.key === 'Escape'){ closeViewer(); }
     else if (e.key === 'ArrowLeft'){ step(-1); }
-    else if (e.key === 'ArrowRight'){ step(1); }
+else if (e.key === 'ArrowRight'){ step(1); }
+    else if (e.key === 'Home'){ e.preventDefault(); jumpTo(0); }
+    else if (e.key === 'End'){ e.preventDefault(); jumpTo(vlist.length - 1); }
     else if (e.key === 'Tab'){
       var focusables = $$('button', viewer).filter(function(b){ return !b.disabled && b.offsetParent !== null; });
       if (!focusables.length){ return; }
@@ -777,15 +938,89 @@ img[data-lqip="1"].lqip-done{filter:none;transform:none}
       else if (!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
     }
   });
+  /* ---------- v4 扩展：胶片条 / 双击缩放 / 拖拽平移 ---------- */
+  var stage = $('#vStage');
+  var zoomed = false;
+  function vzoomReset(){
+    zoomed = false;
+    stage.classList.remove('v-zoomed');
+    vimg.classList.remove('v-zoom');
+    vimg.classList.remove('dragging');
+    vimg.style.removeProperty('--zx');
+    vimg.style.removeProperty('--zy');
+  }
+  function buildStrip(){
+    if (!vStrip || vStrip.children.length){ return; }
+    works.forEach(function(f, i){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.setAttribute('aria-label', '查看《' + f.dataset.title + '》');
+      var im = new Image();
+      im.alt = '';
+      im.loading = 'lazy';
+      im.decoding = 'async';
+      im.src = $('img', f).getAttribute('data-thumb') || '';
+      b.appendChild(im);
+      b.addEventListener('click', function(){ jumpTo(i); });
+      vStrip.appendChild(b);
+    });
+  }
+  function paintStrip(){
+    if (!vStrip || !vStrip.children.length){ return; }
+    Array.prototype.forEach.call(vStrip.children, function(b, i){
+      if (i === vIndex){ b.setAttribute('aria-current', 'true'); } else { b.removeAttribute('aria-current'); }
+    });
+    var act = vStrip.children[vIndex];
+    if (act && act.scrollIntoView){
+      try { act.scrollIntoView({ block: 'nearest', inline: 'center', behavior: reduced ? 'auto' : 'smooth' }); } catch(e){}
+    }
+  }
+  function jumpTo(i){
+    if (!vlist.length){ return; }
+    vIndex = (i + vlist.length) % vlist.length;
+    showWork();
+  }
+  vimg.addEventListener('dblclick', function(e){
+    if (viewer.hidden){ return; }
+    e.preventDefault();
+    if (zoomed){ vzoomReset(); return; }
+    var r = vimg.getBoundingClientRect();
+    if (!r.width){ return; }
+    var ox = ((e.clientX - r.left) / r.width * 100).toFixed(1);
+    var oy = ((e.clientY - r.top) / r.height * 100).toFixed(1);
+    vimg.style.transformOrigin = ox + '% ' + oy + '%';
+    vimg.classList.add('v-zoom');
+    stage.classList.add('v-zoomed');
+    zoomed = true;
+  });
+  var drag = null, panX = 0, panY = 0;
+  stage.addEventListener('pointerdown', function(e){
+    if (!zoomed || viewer.hidden){ return; }
+    if (e.target.closest && (e.target.closest('.v-nav') || e.target.closest('.v-strip'))){ return; }
+    drag = { x: e.clientX, y: e.clientY, bx: panX, by: panY };
+    vimg.classList.add('dragging');
+    try { stage.setPointerCapture(e.pointerId); } catch(err){}
+  });
+  stage.addEventListener('pointermove', function(e){
+    if (!drag){ return; }
+    panX = drag.bx + (e.clientX - drag.x);
+    panY = drag.by + (e.clientY - drag.y);
+    vimg.style.setProperty('--zx', panX.toFixed(1) + 'px');
+    vimg.style.setProperty('--zy', panY.toFixed(1) + 'px');
+  });
+  function endDrag(){ if (!drag){ return; } drag = null; vimg.classList.remove('dragging'); }
+  stage.addEventListener('pointerup', endDrag);
+  stage.addEventListener('pointercancel', endDrag);
+
   /* 移动端滑动切换 */
   var touchX = null, touchY = null;
-  var stage = $('#vStage');
   stage.addEventListener('touchstart', function(e){
     if (e.touches.length !== 1){ return; }
     touchX = e.touches[0].clientX;
     touchY = e.touches[0].clientY;
   }, { passive: true });
   stage.addEventListener('touchend', function(e){
+    if (zoomed){ touchX = null; touchY = null; return; }
     if (touchX === null){ return; }
     var t = e.changedTouches[0];
     var dx = t.clientX - touchX;
@@ -804,6 +1039,7 @@ img[data-lqip="1"].lqip-done{filter:none;transform:none}
   })();
 
   /* ---------- 渐显 ---------- */
+  setTimeout(function(){ try { document.documentElement.classList.add('settled'); } catch(e){} }, 1900);
   var reduced = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   if ('IntersectionObserver' in window && !reduced){
     var io = new IntersectionObserver(function(entries){
@@ -834,6 +1070,77 @@ img[data-lqip="1"].lqip-done{filter:none;transform:none}
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll, { passive: true });
     onScroll();
+  }
+
+  /* ---------- 滚动进度 / 回到顶部 / 顶栏投影 ---------- */
+  var progressBar = $('#progressBar');
+  var toTop = $('#toTop');
+  var headEl = $('.site-head');
+  if (progressBar && toTop){
+    var uiTicking = false;
+    var onScrollUI = function(){
+      if (uiTicking){ return; }
+      uiTicking = true;
+      requestAnimationFrame(function(){
+        var st = window.scrollY || window.pageYOffset || 0;
+        var dh = document.documentElement.scrollHeight - window.innerHeight;
+        progressBar.style.transform = 'scaleX(' + (dh > 0 ? (st / dh).toFixed(4) : 0) + ')';
+        toTop.classList.toggle('show', st > 640);
+        if (headEl){ headEl.classList.toggle('scrolled', st > 10); }
+        if (st < 320){ navLinks.forEach(function(a){ a.classList.remove('active'); }); }
+        uiTicking = false;
+      });
+    };
+    window.addEventListener('scroll', onScrollUI, { passive: true });
+    window.addEventListener('resize', onScrollUI, { passive: true });
+    onScrollUI();
+    toTop.addEventListener('click', function(){
+      try { window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' }); } catch(e){ window.scrollTo(0, 0); }
+    });
+  }
+
+  /* ---------- 导航滚动高亮 ---------- */
+  var navLinks = $$('.head-nav a');
+  var spySections = navLinks.map(function(a){ return document.getElementById(a.getAttribute('href').slice(1)); }).filter(Boolean);
+  if ('IntersectionObserver' in window && spySections.length){
+    var spy = new IntersectionObserver(function(es){
+      es.forEach(function(en){
+        if (en.isIntersecting){
+          navLinks.forEach(function(a){
+            a.classList.toggle('active', a.getAttribute('href') === '#' + en.target.id);
+          });
+        }
+      });
+    }, { rootMargin: '-38% 0px -55% 0px' });
+    spySections.forEach(function(s){ spy.observe(s); });
+  }
+
+  /* ---------- 关于统计数字滚动 ---------- */
+  var statsWrap = $('#aboutStats');
+  if (statsWrap){
+    var counted = false;
+    var statIO = new IntersectionObserver(function(es){
+      es.forEach(function(en){
+        if (en.isIntersecting && !counted){
+          counted = true;
+          statIO.disconnect();
+          $$('.stat-num span[data-count]', statsWrap).forEach(function(el){
+            var target = parseInt(el.getAttribute('data-count'), 10) || 0;
+            if (reduced){ el.textContent = String(target); return; }
+            var t0 = null;
+            var tick = function(t){
+              if (t0 === null){ t0 = t; }
+              var p = Math.min(1, (t - t0) / 1100);
+              var eased = 1 - Math.pow(1 - p, 3);
+              el.textContent = String(Math.round(target * eased));
+              if (p < 1){ requestAnimationFrame(tick); }
+            };
+            requestAnimationFrame(tick);
+          });
+        }
+      });
+    }, { threshold: .4 });
+    statIO.observe(statsWrap);
   }
 
   /* ---------- 外观切换 ---------- */
@@ -872,20 +1179,35 @@ img[data-lqip="1"].lqip-done{filter:none;transform:none}
 </script>
 <script>
 (function(){
-  var lazy=[].slice.call(document.querySelectorAll('img[data-full]'));
-  function done(im){ im.classList.add('lqip-done'); im.removeAttribute('data-lqip'); }
-  function load(im){
-    var url=im.getAttribute('data-full');
-    im.removeAttribute('data-full');
-    var full=new Image();
-    full.onload=full.onerror=function(){ im.src=url; done(im); };
-    full.src=url;
+  function done(im){
+    im.classList.add('lqip-done');
+    im.removeAttribute('data-lqip');
+    var fig = im.closest ? im.closest('figure') : null;
+    if (fig){ fig.classList.add('img-loaded'); }
   }
-  if(!('IntersectionObserver' in window)){ lazy.forEach(function(im){ im.src=im.getAttribute('data-full'); im.removeAttribute('data-full'); done(im); }); return; }
-  var io=new IntersectionObserver(function(es){
-    es.forEach(function(e){ if(e.isIntersecting){ load(e.target); io.unobserve(e.target); } });
-  },{rootMargin:'600px 0px'});
-  lazy.forEach(function(im){ io.observe(im); });
+  function fetchSwap(im, url){
+    var pre = new Image();
+    pre.onload = pre.onerror = function(){ im.src = url; done(im); };
+    pre.src = url;
+  }
+  var cards = [].slice.call(document.querySelectorAll('img[data-thumb]'));
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if (e.isIntersecting){ fetchSwap(e.target, e.target.getAttribute('data-thumb')); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '700px 0px' });
+    cards.forEach(function(im){ io.observe(im); });
+  } else {
+    cards.forEach(function(im){ fetchSwap(im, im.getAttribute('data-thumb')); });
+  }
+  var hero = document.querySelector('img[data-full]:not([data-thumb])');
+  if (hero){ fetchSwap(hero, hero.getAttribute('data-full')); }
+  window.addEventListener('load', function(){
+    if ('serviceWorker' in navigator){
+      try { navigator.serviceWorker.register('sw.js'); } catch(e){}
+    }
+  });
 })();
 </script>
 </body>

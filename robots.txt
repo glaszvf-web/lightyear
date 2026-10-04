@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://glaszvf-web.github.io/lightyear/sitemap.xml
