@@ -451,6 +451,32 @@ html.has-cursor input,html.has-cursor textarea{cursor:text;}
 
 /* 主题切换 View Transition */
 ::view-transition-old(root),::view-transition-new(root){animation-duration:.45s;animation-timing-function:var(--ease);}
+
+/* ============================================================
+   v6 · 炫酷包
+   ============================================================ */
+.hero-dust{position:absolute;inset:0;z-index:1;pointer-events:none;}
+.hero-copy{z-index:2;}
+.hero-lockup .ch{display:inline-block;animation:chIn .75s var(--ease) both;}
+.hero-lockup .ch:nth-child(1){animation-delay:.28s;}
+.hero-lockup .ch:nth-child(2){animation-delay:.37s;}
+.hero-lockup .ch:nth-child(3){animation-delay:.46s;}
+.hero-lockup .ch:nth-child(4){animation-delay:.55s;}
+@keyframes chIn{0%{opacity:0;filter:blur(10px);transform:translateY(.32em);}100%{opacity:1;filter:blur(0);transform:none;}}
+
+/* 卡片光泽跟随鼠标 */
+.work .work-open::before{content:"";position:absolute;inset:0;z-index:1;background:radial-gradient(250px circle at var(--gx,50%) var(--gy,50%),rgba(255,255,255,.15),transparent 62%);opacity:0;pointer-events:none;transition:opacity .35s var(--ease);}
+@media (hover:hover){.work:hover .work-open::before{opacity:1;transition:opacity .35s var(--ease);}}
+
+/* LIGHTYEAR 描边跑马灯 */
+.tape{border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;padding:clamp(14px,2.4vw,24px) 0;background:var(--paper);}
+.tape-track{display:flex;width:max-content;white-space:nowrap;animation:tape 30s linear infinite;}
+.tape span{font-family:var(--font-display);font-weight:600;font-size:clamp(26px,4.2vw,52px);letter-spacing:.2em;color:transparent;-webkit-text-stroke:1px color-mix(in srgb,var(--mist) 55%,transparent);padding-right:.6em;}
+.tape span em{font-style:normal;color:var(--accent);-webkit-text-stroke:0;}
+@keyframes tape{to{transform:translateX(-50%);}}
+
+/* 看片层方向性滑动 */
+.v-img.slide-in{transition:opacity .34s var(--ease),filter .34s var(--ease),transform .42s var(--ease);}
 </style>
 </head>
 <body>
@@ -492,6 +518,7 @@ html.has-cursor input,html.has-cursor textarea{cursor:text;}
       <figure class="hero-media">
         <img id="heroImg" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABMNDhEODBMRDxEVFBMXHTAfHRoaHToqLCMwRT1JR0Q9Q0FMVm1dTFFoUkFDX4JgaHF1e3x7SlyGkIV3j214e3b/2wBDARQVFR0ZHTgfHzh2T0NPdnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnb/wAARCAASACADASIAAhEBAxEB/8QAGQAAAgMBAAAAAAAAAAAAAAAAAAIDBQYE/8QAJRAAAQUAAAQHAQAAAAAAAAAAAQACAwQRITFRkRIUIkFSYYGS/8QAFwEBAQEBAAAAAAAAAAAAAAAAAAMBAv/EABoRAQEAAgMAAAAAAAAAAAAAAAABAhFBUWH/2gAMAwEAAhEDEQA/AFhs1j7t/pWlK3XiIcc7rLO8vJmF0ZAz0lTwUmy4GXHN35N1Qyl7UmmhvXa8ricb3VbLahzAWD9CqbdGWIkNtRv45yIXHLWnA4Pa4/RSY87LfEbSd5qRrndT3QhUcHc4+Hme6TT1KEI1/9k=" data-full="photos/hero.webp" data-original="photos/hero.jpg" data-lqip="1" alt="航拍视角的城市河道黄昏，金色阳光映在江面，有船只驶过" width="2560" height="1440" fetchpriority="high" decoding="async">
       </figure>
+      <canvas class="hero-dust" id="dust" aria-hidden="true"></canvas>
       <div class="hero-veil" aria-hidden="true"></div>
       <div class="hero-copy">
         <p class="hero-kicker">LIGHTYEAR · 摄影作品集</p>
@@ -623,6 +650,13 @@ html.has-cursor input,html.has-cursor textarea{cursor:text;}
       <p class="works-empty" id="worksEmpty" hidden>没有符合条件的作品——换个关键词或筛选试试。</p>
     </div>
   </section>
+
+  <!-- LIGHTYEAR 跑马灯 -->
+  <div class="tape" aria-hidden="true">
+    <div class="tape-track">
+      <span>光年留影 <em>✦</em> LIGHTYEAR <em>✦</em> 摄影 · 纯白鸢尾花 <em>✦</em> 把路过的光留在这里 <em>✦</em>&nbsp;</span><span>光年留影 <em>✦</em> LIGHTYEAR <em>✦</em> 摄影 · 纯白鸢尾花 <em>✦</em> 把路过的光留在这里 <em>✦</em>&nbsp;</span>
+    </div>
+  </div>
 
   <!-- 语录 -->
   <section class="sect narrative" id="narrative" data-od-id="narrative" data-component="Narrative Quote">
@@ -898,7 +932,12 @@ html.has-cursor input,html.has-cursor textarea{cursor:text;}
     vzoomReset();
     if (vimg.getAttribute('data-current') !== fullUrl){
       vimg.setAttribute('data-current', fullUrl);
-      vimg.classList.add('v-swap');
+      vimg.classList.add('v-swap', 'slide-in');
+      if (vdir){
+        vimg.style.transition = 'none';
+        vimg.style.transform = 'translateX(' + (vdir * 52) + 'px)';
+        vdir = 0;
+      }
       vfig.classList.add('v-loading');
       vimg.src = thumbUrl;
       var pre = new Image();
@@ -907,6 +946,10 @@ html.has-cursor input,html.has-cursor textarea{cursor:text;}
         vimg.src = fullUrl;
         vimg.classList.remove('v-swap');
         vfig.classList.remove('v-loading');
+        setTimeout(function(){
+          vimg.style.transition = '';
+          vimg.style.transform = '';
+        }, 300);
       };
       pre.src = fullUrl;
     }
@@ -942,10 +985,32 @@ html.has-cursor input,html.has-cursor textarea{cursor:text;}
     if (i === -1){ vlist = works.slice(); vlist.forEach(function(f, k){ if (f.dataset.id === id) { i = k; } }); }
     if (i === -1){ return; }
     vIndex = i;
+    vdir = 0;
     lastFocus = document.activeElement;
     buildStrip();
     showWork();
     viewer.hidden = false;
+    /* FLIP：从卡片位置生长到全屏 */
+    (function(){
+      var cimg = $('img', vlist[i]);
+      if (!cimg){ return; }
+      var r = cimg.getBoundingClientRect();
+      var vr = vimg.getBoundingClientRect();
+      if (r.width < 40 || vr.width < 60){ return; }
+      var s = ((r.width / vr.width) + (r.height / vr.height)) / 2;
+      var dx = r.left - vr.left, dy = r.top - vr.top;
+      vimg.style.transformOrigin = 'top left';
+      vimg.style.transition = 'none';
+      vimg.style.transform = 'translate(' + dx.toFixed(1) + 'px,' + dy.toFixed(1) + 'px) scale(' + s.toFixed(3) + ')';
+      vimg.style.opacity = '0.55';
+      var flipGo = function(){
+        vimg.style.transition = 'transform .58s cubic-bezier(.22,.61,.36,1), opacity .45s ease';
+        vimg.style.transform = 'none';
+        vimg.style.opacity = '';
+        setTimeout(function(){ vimg.style.transition = ''; vimg.style.transformOrigin = ''; }, 640);
+      };
+      setTimeout(flipGo, 40);
+    })();
     document.documentElement.classList.add('vlock');
     try { pageEl.inert = true; } catch(e){}
     btnClose.focus();
@@ -958,8 +1023,10 @@ html.has-cursor input,html.has-cursor textarea{cursor:text;}
     if (lastFocus && lastFocus.focus) { lastFocus.focus(); }
     lastFocus = null;
   }
+  var vdir = 0;
   function step(dir){
     if (!vlist.length){ return; }
+    vdir = dir;
     vIndex = (vIndex + dir + vlist.length) % vlist.length;
     showWork();
   }
@@ -1233,6 +1300,74 @@ else if (e.key === 'ArrowRight'){ step(1); }
     statIO.observe(statsWrap);
   }
 
+  /* ---------- v6 · 字标逐字凝现 ---------- */
+  var lockup = $('.hero-lockup');
+  if (lockup && !reduced){
+    var chars = lockup.textContent.split('');
+    lockup.textContent = '';
+    chars.forEach(function(c){
+      var s = document.createElement('span');
+      s.className = 'ch';
+      s.textContent = c;
+      lockup.appendChild(s);
+    });
+  }
+
+  /* ---------- v6 · 首屏金尘粒子 ---------- */
+  var dust = $('#dust');
+  if (dust && !reduced){
+    var dctx = dust.getContext('2d');
+    var dparts = [], dustOn = false, dw = 0, dh = 0;
+    var dustResize = function(){
+      var host = dust.parentNode;
+      var r = host.getBoundingClientRect();
+      var dpr = Math.min(2, window.devicePixelRatio || 1);
+      dw = Math.max(1, r.width); dh = Math.max(1, r.height);
+      dust.width = Math.round(dw * dpr); dust.height = Math.round(dh * dpr);
+      dctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    var dustInit = function(){
+      dparts = [];
+      var n = Math.min(72, Math.round(dw * dh / 24000));
+      for (var i = 0; i < n; i++){
+        dparts.push({
+          x: Math.random() * dw, y: Math.random() * dh,
+          r: Math.random() * 1.7 + 0.4,
+          s: Math.random() * 0.28 + 0.06,
+          o: Math.random() * 0.38 + 0.1,
+          tw: Math.random() * Math.PI * 2,
+          ts: Math.random() * 0.02 + 0.006
+        });
+      }
+    };
+    var dustFrame = function(){
+      if (!dustOn){ return; }
+      dctx.clearRect(0, 0, dw, dh);
+      for (var i = 0; i < dparts.length; i++){
+        var p = dparts[i];
+        p.y -= p.s; p.x += Math.sin(p.tw) * 0.16; p.tw += p.ts;
+        if (p.y < -4){ p.y = dh + 4; p.x = Math.random() * dw; }
+        var a = p.o * (0.55 + 0.45 * Math.sin(p.tw * 3));
+        dctx.beginPath();
+        dctx.arc(p.x, p.y, p.r, 0, 6.2832);
+        dctx.fillStyle = 'rgba(255,224,170,' + a.toFixed(3) + ')';
+        dctx.fill();
+      }
+      requestAnimationFrame(dustFrame);
+    };
+    dustResize(); dustInit();
+    window.addEventListener('resize', function(){ dustResize(); dustInit(); });
+    if ('IntersectionObserver' in window){
+      var dio = new IntersectionObserver(function(es){
+        es.forEach(function(en){
+          if (en.isIntersecting && !dustOn){ dustOn = true; dustFrame(); }
+          else if (!en.isIntersecting){ dustOn = false; }
+        });
+      }, { threshold: 0.04 });
+      dio.observe(dust.closest('.hero') || dust.parentNode);
+    } else { dustOn = true; dustFrame(); }
+  }
+
   /* ---------- v5 · 开屏揭幕 ---------- */
   var bootEl = $('#boot');
   if (bootEl){
@@ -1323,6 +1458,11 @@ else if (e.key === 'ArrowRight'){ step(1); }
         var py = (e.clientY - r.top) / r.height - 0.5;
         f.style.setProperty('--ry', (px * 3.2).toFixed(2) + 'deg');
         f.style.setProperty('--rx', (-py * 2.6).toFixed(2) + 'deg');
+        var open = $('.work-open', f);
+        if (open){
+          open.style.setProperty('--gx', ((px + 0.5) * 100).toFixed(1) + '%');
+          open.style.setProperty('--gy', ((py + 0.5) * 100).toFixed(1) + '%');
+        }
       });
       f.addEventListener('mouseleave', function(){
         f.style.setProperty('--ry', '0deg');
