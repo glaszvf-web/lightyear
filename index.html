@@ -20,7 +20,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"ImageGallery","name":"光年留影 LIGHTYEAR","url":"https://glaszvf-web.github.io/lightyear/","image":"https://glaszvf-web.github.io/lightyear/photos/hero.jpg","author":{"@type":"Person","name":"纯白鸢尾花"},"description":"纯白鸢尾花的摄影作品集：城市、自然、人像与猫的影像记录。"}</script>
 <meta name="description" content="光年留影（LIGHTYEAR）——纯白鸢尾花的摄影作品集：城市、自然、人像与猫的影像记录。">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='8' fill='%238e2f2f'/%3E%3Ctext x='20' y='28' text-anchor='middle' font-family='serif' font-size='24' fill='%23f7f3ea'%3E%E9%B8%A2%3C/text%3E%3C/svg%3E">
-<script>try{var t=localStorage.getItem('ly.theme');if(t==='dark'||(!t&&window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.dataset.theme='dark';}}catch(e){}</script>
+<script>try{var t=localStorage.getItem('ly.theme');if(t!=='light'){document.documentElement.dataset.theme='dark';}}catch(e){}</script>
 <style>
 /* ============================================================
    光年留影 LIGHTYEAR · v2「白盒画廊」
@@ -137,7 +137,8 @@ body::after{
 .hero-veil{position:absolute;inset:0;background:linear-gradient(to top,rgba(14,12,10,.72) 0%,rgba(14,12,10,.28) 34%,rgba(14,12,10,.06) 62%,rgba(14,12,10,.32) 100%);}
 .hero-copy{position:absolute;left:var(--pad);right:var(--pad);bottom:clamp(28px,6vh,64px);max-width:1240px;margin:0 auto;color:var(--on-night);display:flex;flex-direction:column;gap:12px;}
 .hero-kicker{font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:rgba(237,231,218,.72);font-family:var(--font-mono);}
-.hero-lockup{font-size:clamp(40px,7.2vw,84px);letter-spacing:.16em;font-weight:600;line-height:1.1;margin-left:-.08em;text-shadow:0 1px 24px rgba(0,0,0,.25);}
+.hero-lockup{font-size:clamp(58px,10.5vw,148px);letter-spacing:.14em;font-weight:600;line-height:1.06;margin-left:-.06em;text-shadow:0 2px 40px rgba(0,0,0,.45);background:linear-gradient(100deg,#EDE6D8 20%,#FFF7E0 38%,#D8B98A 50%,#FFF7E0 62%,#EDE6D8 80%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:lockupShine 5.5s ease-in-out infinite;}
+@keyframes lockupShine{0%,100%{background-position:0% 0;}50%{background-position:100% 0;}}
 .hero-line{font-family:var(--font-display);font-size:clamp(16px,2vw,21px);letter-spacing:.1em;color:rgba(237,231,218,.92);}
 .hero-cap{font-size:12.5px;color:rgba(237,231,218,.68);letter-spacing:.08em;}
 .hero-cap b{font-weight:600;color:rgba(237,231,218,.94);}
@@ -515,6 +516,50 @@ html{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--mist) 45%,tran
 ::-webkit-scrollbar-track{background:var(--paper);}
 ::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--mist) 42%,transparent);border-radius:6px;border:2px solid var(--paper);}
 ::-webkit-scrollbar-thumb:hover{background:var(--accent);}
+
+/* ============================================================
+   v8 · 视觉革命
+   ============================================================ */
+/* 区块巨型编号 */
+.sect-head-wrap{position:relative;}
+.mega-no{position:absolute;top:calc(-.35em);right:-.05em;z-index:0;font-family:var(--font-display);font-weight:600;font-size:clamp(96px,14vw,210px);line-height:1;color:transparent;-webkit-text-stroke:1px color-mix(in srgb,var(--mist) 30%,transparent);opacity:.6;pointer-events:none;user-select:none;translate:0 calc(var(--mny,0) * -38px);transition:translate .1s linear;}
+.sec-head{position:relative;z-index:1;}
+
+/* 卡片戏剧化悬停 */
+.work-open::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(to top,rgba(12,10,9,.78) 0%,rgba(12,10,9,.25) 42%,rgba(12,10,9,0) 68%);opacity:0;transition:opacity .45s var(--ease);pointer-events:none;}
+@media (hover:hover){
+  .work:hover .work-open::after{opacity:1;}
+  .work:hover .work-cap{translate:0 -4px;}
+  .work-cap{transition:translate .45s var(--ease);}
+  .work:hover .work-open img{transform:translateY(var(--py,0px)) scale(1.07);}
+  .work .work-open img{transition:transform .8s var(--ease),filter .55s ease;}
+}
+
+/* 双排跑马灯 */
+.tape{padding:0;}
+.tape-row{display:flex;width:max-content;white-space:nowrap;overflow:hidden;padding:clamp(10px,1.6vw,18px) 0;}
+.tape-row.r2{border-top:1px solid var(--line);}
+.tape-row .tape-track{animation-duration:36s;}
+.tape-row.r2 .tape-track{animation-duration:29s;animation-direction:reverse;}
+.tape-row.r2 span{color:var(--ink);opacity:.85;-webkit-text-stroke:0;font-size:clamp(15px,2vw,24px);letter-spacing:.34em;align-self:center;}
+.tape-row.r2 span em{-webkit-text-stroke:0;color:var(--accent);}
+
+/* h2 逐字翻转入场 */
+.sec-head h2 .ch2{display:inline-block;opacity:0;transform:rotateX(88deg);transform-origin:50% 100%;transition:opacity .55s var(--ease),transform .65s var(--ease);}
+.sec-head.in h2 .ch2{opacity:1;transform:none;}
+.sec-head h2 .ch2:nth-child(2){transition-delay:.06s;}
+.sec-head h2 .ch2:nth-child(3){transition-delay:.12s;}
+.sec-head h2 .ch2:nth-child(n+4){transition-delay:.17s;}
+.sec-head h2{perspective:600px;}
+
+/* 页脚水印视差 */
+.foot-mark{translate:0 calc(var(--fny,0) * -30px);transition:translate .12s linear;}
+
+/* 开屏大数字 */
+.boot-pct{font-size:clamp(38px,5vw,64px) !important;font-family:var(--font-display) !important;color:var(--ink) !important;min-width:110px !important;letter-spacing:.04em;}
+.boot-pct::after{font-size:.38em;vertical-align:.9em;margin-left:2px;}
+.boot-meter{align-items:baseline;}
+.boot-line{width:200px;}
 </style>
 </head>
 <body>
@@ -552,7 +597,7 @@ html{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--mist) 45%,tran
       <a href="#about">关于</a>
       <a href="#subscribe">订阅</a>
     </nav>
-    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深色外观" aria-pressed="false">
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换浅色外观" aria-pressed="true">
       <svg class="ic-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"></circle><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M18.5 5.5l-1.7 1.7M7.2 16.8l-1.7 1.7"></path></svg>
       <svg class="ic-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.4 13.6A8.4 8.4 0 1 1 10.4 3.6a6.8 6.8 0 0 0 10 10z"></path></svg>
     </button>
@@ -582,9 +627,10 @@ html{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--mist) 45%,tran
   <section class="sect" id="works" data-od-id="works" data-component="Gallery">
     <div class="wrap">
       <div class="sec-head">
+        <span class="mega-no" aria-hidden="true">01</span>
         <div>
           <p class="eyebrow">作品集 · WORKS</p>
-          <h2>作品选</h2>
+          <h2 data-flip>作品选</h2>
           <p class="lead">城市、草木、人，还有猫。点击任意一幅进入全屏看片，可查看拍摄参数；看片层支持 ← → 键盘、双击放大与原图下载。</p>
         </div>
         <p class="works-count" id="worksCount">共 14 幅</p>
@@ -701,14 +747,22 @@ html{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--mist) 45%,tran
 
   <!-- LIGHTYEAR 跑马灯 -->
   <div class="tape" aria-hidden="true">
-    <div class="tape-track">
-      <span>光年留影 <em>✦</em> LIGHTYEAR <em>✦</em> 摄影 · 纯白鸢尾花 <em>✦</em> 把路过的光留在这里 <em>✦</em>&nbsp;</span><span>光年留影 <em>✦</em> LIGHTYEAR <em>✦</em> 摄影 · 纯白鸢尾花 <em>✦</em> 把路过的光留在这里 <em>✦</em>&nbsp;</span>
+    <div class="tape-row">
+      <div class="tape-track">
+        <span>光年留影 <em>✦</em> LIGHTYEAR <em>✦</em> 摄影 · 纯白鸢尾花 <em>✦</em> 把路过的光留在这里 <em>✦</em>&nbsp;</span><span>光年留影 <em>✦</em> LIGHTYEAR <em>✦</em> 摄影 · 纯白鸢尾花 <em>✦</em> 把路过的光留在这里 <em>✦</em>&nbsp;</span>
+      </div>
+    </div>
+    <div class="tape-row r2">
+      <div class="tape-track">
+        <span>影像的意义，在于把一个尽兴的瞬间 <em>✦</em> 变成一个永恒 <em>✦</em> WORDS <em>✦</em>&nbsp;</span><span>影像的意义，在于把一个尽兴的瞬间 <em>✦</em> 变成一个永恒 <em>✦</em> WORDS <em>✦</em>&nbsp;</span>
+      </div>
     </div>
   </div>
 
   <!-- 语录 -->
   <section class="sect narrative" id="narrative" data-od-id="narrative" data-component="Narrative Quote">
-    <figure class="quote-wrap reveal">
+    <figure class="quote-wrap reveal" style="position:relative;">
+      <span class="mega-no" aria-hidden="true" style="top:-.3em;right:0;">02</span>
       <svg class="quote-ink" viewBox="0 0 120 30" aria-hidden="true"><path d="M4 20C28 8 52 6 78 12c14 3 26 8 38 12" pathLength="1"></path></svg>
       <blockquote class="quote-text">
         <span>影像的意义，</span>
@@ -722,6 +776,13 @@ html{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--mist) 45%,tran
   <!-- 关于 -->
   <section class="sect about" id="about" data-od-id="about" data-component="About">
     <div class="wrap">
+      <div class="sec-head" style="margin-bottom:clamp(18px,3vw,30px);">
+        <span class="mega-no" aria-hidden="true">03</span>
+        <div>
+          <p class="eyebrow">关于 · ABOUT</p>
+          <h2 data-flip>纯白鸢尾花</h2>
+        </div>
+      </div>
       <div class="about-stats reveal" id="aboutStats" role="list" aria-label="作品集数据">
         <div role="listitem"><p class="stat-num"><span data-count="14">0</span></p><p class="stat-lbl">幅作品 · WORKS</p></div>
         <div role="listitem"><p class="stat-num"><span data-count="4">0</span></p><p class="stat-lbl">个题材 · GENRES</p></div>
@@ -730,8 +791,7 @@ html{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--mist) 45%,tran
       </div>
       <div class="about-grid">
       <div class="about-intro reveal">
-        <p class="eyebrow">关于 · ABOUT</p>
-        <h2>纯白鸢尾花</h2>
+        <p class="about-sign" style="margin:0 0 14px;">纯白鸢尾花 · 作品与自述</p>
         <p>拍照这件事，是从记录身边的光开始的。这里的照片大多来自日常的行走与停留——城市、草木、身边的人，还有猫。</p>
         <p>挑选的标准只有一个：那一瞬间的光，值不值得留下来。这里会持续更新，新作品会陆续加入。</p>
         <p class="about-sign"><span class="seal" aria-hidden="true"><svg viewBox="0 0 40 40"><rect width="40" height="40" rx="8"></rect><text x="20" y="28">鸢</text></svg></span>纯白鸢尾花 · 摄影</p>
@@ -1361,8 +1421,9 @@ else if (e.key === 'ArrowRight'){ step(1); }
     });
   }
 
-  /* ---------- v6 · 首屏金尘粒子 ---------- */
+  /* ---------- v6 · 首屏金尘粒子（v8：鼠标引力场） ---------- */
   var dust = $('#dust');
+  var dustMouse = { x: -9999, y: -9999 };
   if (dust && !reduced){
     var dctx = dust.getContext('2d');
     var dparts = [], dustOn = false, dw = 0, dh = 0;
@@ -1393,12 +1454,20 @@ else if (e.key === 'ArrowRight'){ step(1); }
       dctx.clearRect(0, 0, dw, dh);
       for (var i = 0; i < dparts.length; i++){
         var p = dparts[i];
+        var ddx = dustMouse.x - p.x, ddy = dustMouse.y - (p.y + dust.getBoundingClientRect().top);
+        var dist2 = ddx * ddx + ddy * ddy;
+        if (dist2 < 32400){
+          var f = (1 - Math.sqrt(dist2) / 180) * 0.9;
+          p.x += ddx * f * 0.045;
+          p.y += ddy * f * 0.045;
+        }
         p.y -= p.s; p.x += Math.sin(p.tw) * 0.16; p.tw += p.ts;
         if (p.y < -4){ p.y = dh + 4; p.x = Math.random() * dw; }
+        if (p.x < -4){ p.x = dw + 4; } else if (p.x > dw + 4){ p.x = -4; }
         var a = p.o * (0.55 + 0.45 * Math.sin(p.tw * 3));
         dctx.beginPath();
         dctx.arc(p.x, p.y, p.r, 0, 6.2832);
-        dctx.fillStyle = 'rgba(255,224,170,' + a.toFixed(3) + ')';
+        dctx.fillStyle = 'rgba(255,214,140,' + (a * 1.35).toFixed(3) + ')';
         dctx.fill();
       }
       requestAnimationFrame(dustFrame);
@@ -1481,6 +1550,15 @@ else if (e.key === 'ArrowRight'){ step(1); }
       };
       requestAnimationFrame(bootTick);
       setTimeout(function(){ pageLoaded = true; }, 3400);
+      /* 兜底：无论计数循环是否被节流，4.2 秒后必定完成揭幕 */
+      setTimeout(function(){
+        if (!document.documentElement.classList.contains('booted')){
+          if (bootBar){ bootBar.style.width = '100%'; }
+          if (bootPct){ bootPct.textContent = '100'; }
+          if (bootEl){ bootEl.classList.add('out'); }
+          finishBoot();
+        }
+      }, 4200);
     }
   }
 
@@ -1499,6 +1577,7 @@ else if (e.key === 'ArrowRight'){ step(1); }
         curRing.classList.toggle('is-view', !!view && !link);
         curRing.classList.toggle('is-link', !!link);
       }
+      if (dust){ dustMouse.x = e.clientX; dustMouse.y = e.clientY; }
     }, { passive: true });
     document.addEventListener('mouseleave', function(){ if (curDot){ curDot.style.opacity = '0'; } if (curRing){ curRing.style.opacity = '0'; } });
     document.addEventListener('mouseenter', function(){ if (curDot){ curDot.style.opacity = ''; } if (curRing){ curRing.style.opacity = ''; } });
@@ -1591,6 +1670,47 @@ else if (e.key === 'ArrowRight'){ step(1); }
       paraTick();
     }
   }
+
+  /* ---------- v8 · 区块巨型编号视差 + 页脚水印视差 ---------- */
+  var megaNos = $$('.mega-no');
+  var footMark = $('.foot-mark');
+  if ((megaNos.length || footMark) && !reduced){
+    var mTicking = false;
+    var mTick = function(){
+      mTicking = false;
+      var vh = window.innerHeight;
+      megaNos.forEach(function(el){
+        var r = el.getBoundingClientRect();
+        if (r.bottom < -100 || r.top > vh + 100){ return; }
+        var p = (r.top + r.height / 2 - vh / 2) / vh;
+        el.style.setProperty('--mny', Math.max(-1, Math.min(1, p)).toFixed(3));
+      });
+      if (footMark){
+        var fr = footMark.getBoundingClientRect();
+        var fp = (fr.top + fr.height / 2 - vh / 2) / vh;
+        footMark.style.setProperty('--fny', Math.max(-1, Math.min(1, fp)).toFixed(3));
+      }
+    };
+    window.addEventListener('scroll', function(){
+      if (mTicking){ return; }
+      mTicking = true;
+      requestAnimationFrame(mTick);
+    }, { passive: true });
+    mTick();
+  }
+
+  /* ---------- v8 · h2 逐字翻转入场 ---------- */
+  $$('h2[data-flip]').forEach(function(h2){
+    var text = h2.textContent;
+    h2.textContent = '';
+    text.split('').forEach(function(c){
+      var s = document.createElement('span');
+      s.className = 'ch2';
+      s.textContent = c;
+      h2.appendChild(s);
+    });
+    h2.closest('.sec-head').classList.add('in');
+  });
 
   /* ---------- v7 · 磁性按钮（桌面） ---------- */
   if (matchMedia('(pointer: fine)').matches && !reduced){
