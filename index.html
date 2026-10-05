@@ -627,6 +627,31 @@ html{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--mist) 45%,tran
 .hero-glow.on{opacity:1;}
 .hero-stage{transform:scale(calc(1 + var(--zp,0) * 0.3));transform-origin:50% 62%;will-change:transform;}
 @media (prefers-reduced-motion:reduce){.hero-stage{transform:none;}}
+
+/* ============================================================
+   v11 · 压舱金
+   ============================================================ */
+/* 看片层环境光：当前作品主色晕染 */
+.v-ambient{position:absolute;inset:-12%;z-index:0;pointer-events:none;
+  background:radial-gradient(52% 44% at 50% 46%, var(--amb, rgba(120,90,50,0)), transparent 72%);
+  filter:blur(38px);opacity:.5;transition:background 1.1s ease,opacity .9s var(--ease);}
+.v-ambient.on{opacity:.72;}
+.v-figure{z-index:1;}
+
+/* 胶片条弹性放大 */
+.v-strip button{transition:opacity .22s var(--ease),border-color .22s var(--ease),transform .28s var(--ease);}
+.v-strip button:hover{opacity:1;transform:translateY(-4px) scale(1.28);z-index:2;}
+.v-strip button[aria-current="true"]{transform:scale(1.14);}
+.v-strip button[aria-current="true"]:hover{transform:translateY(-4px) scale(1.3);}
+
+/* 巨型字标 3D 倾斜 */
+.hero-copy{perspective:900px;}
+.hero-lockup{transform-style:preserve-3d;will-change:transform;}
+@media (prefers-reduced-motion:reduce){.hero-lockup{transform:none !important;}}
+
+/* 看片图呼吸（scale 独立属性，不与 transform 缩放冲突） */
+.v-img{animation:vBreathe 8s ease-in-out infinite alternate;}
+@keyframes vBreathe{from{scale:1;}to{scale:1.014;}}
 </style>
 </head>
 <body>
@@ -913,6 +938,7 @@ html{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--mist) 45%,tran
     </button>
   </div>
   <div class="v-stage" id="vStage">
+    <div class="v-ambient" id="vAmbient" aria-hidden="true"></div>
     <figure class="v-figure">
       <img class="v-img" id="viewerImg" alt="">
     </figure>
@@ -1079,6 +1105,34 @@ html{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--mist) 45%,tran
   var lastFocus = null;
 
   function visibleWorks(){ return works.filter(function(f){ return !f.hidden; }); }
+  function ambientFrom(imgEl){
+    var vAmb = $('#vAmbient');
+    if (!vAmb){ return; }
+    var src = imgEl.getAttribute('data-thumb') || imgEl.src;
+    var probe = new Image();
+    probe.crossOrigin = 'anonymous';
+    probe.onload = function(){
+      try {
+        var c = document.createElement('canvas');
+        c.width = 12; c.height = 12;
+        var cx = c.getContext('2d');
+        cx.drawImage(probe, 0, 0, 12, 12);
+        var d = cx.getImageData(0, 0, 12, 12).data;
+        var r = 0, g = 0, b = 0, n = 0, i;
+        for (i = 0; i < d.length; i += 4){
+          var mx = Math.max(d[i], d[i+1], d[i+2]), mn = Math.min(d[i], d[i+1], d[i+2]);
+          if (d[i+3] > 120 && mx - mn > 18 && mx > 48){
+            r += d[i]; g += d[i+1]; b += d[i+2]; n++;
+          }
+        }
+        if (!n){ for (i = 0; i < d.length; i += 4){ r += d[i]; g += d[i+1]; b += d[i+2]; } n = d.length / 4; }
+        r = Math.round(r / n); g = Math.round(g / n); b = Math.round(b / n);
+        vAmb.style.setProperty('--amb', 'rgba(' + r + ',' + g + ',' + b + ',0.5)');
+        vAmb.classList.add('on');
+      } catch(e){}
+    };
+    probe.src = src;
+  }
   function exifChips(raw){
     if (!raw){ return ''; }
     var segs = raw.split('·').map(function(s){ return s.trim(); }).filter(Boolean);
@@ -1135,6 +1189,7 @@ html{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--mist) 45%,tran
     vsub.textContent = (CAT[d.cat] || '') + ' · ' + (TONE[d.color] || '') + ' · 摄影：纯白鸢尾花';
     vexif.innerHTML = exifChips(d.exif);
     vexif.title = d.exif || '';
+    ambientFrom($('img', f));
     vcount.textContent = (vIndex + 1) + ' / ' + vlist.length;
     btnLike.setAttribute('aria-pressed', String(has(liked, d.id)));
     btnSave.setAttribute('aria-pressed', String(has(saved, d.id)));
@@ -1387,6 +1442,7 @@ else if (e.key === 'ArrowRight'){ step(1); }
   /* ---------- 首屏缓慢视差 ---------- */
   var heroImg = $('#heroImg');
   var heroCopy = $('.hero-copy');
+  var heroLockup = $('.hero-lockup');
   if (!reduced && heroImg){
     var ticking = false;
     var onScroll = function(){
@@ -1770,6 +1826,9 @@ else if (e.key === 'ArrowRight'){ step(1); }
       if (heroCopy){
         var hx = (e.clientX / window.innerWidth - 0.5), hy = (e.clientY / window.innerHeight - 0.5);
         heroCopy.style.transform = 'translate(' + (hx * -12).toFixed(1) + 'px,' + (hy * -8).toFixed(1) + 'px)';
+        if (heroLockup){
+          heroLockup.style.transform = 'rotateX(' + (hy * 6).toFixed(2) + 'deg) rotateY(' + (hx * -8).toFixed(2) + 'deg)';
+        }
       }
     }, { passive: true });
     document.addEventListener('mouseleave', function(){ if (curDot){ curDot.style.opacity = '0'; } if (curRing){ curRing.style.opacity = '0'; } });
