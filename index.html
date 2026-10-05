@@ -352,6 +352,7 @@ body{transition:background-color .4s var(--ease),color .4s var(--ease);}
 .hero-copy>*:nth-child(4){animation-delay:.55s;}
 .hero-copy>*:nth-child(5){animation-delay:.7s;}
 html.settled .hero-copy>*{opacity:1;translate:0 0;animation:none;}
+html.settled .hero-lockup .ch{opacity:1;filter:none;transform:none;animation:none;}
 
 /* 语录：笔触描绘 + 逐行浮现 */
 .quote-ink path{stroke-dasharray:1;stroke-dashoffset:1;}
@@ -403,19 +404,44 @@ a.v-btn{text-decoration:none;}
    v5 · 奢华质感包
    ============================================================ */
 
-/* 开屏揭幕 */
-.boot{position:fixed;inset:0;z-index:120;display:grid;place-items:center;background:var(--paper);transition:opacity .7s var(--ease),visibility .7s;}
-.boot-done{opacity:0;visibility:hidden;pointer-events:none;}
-.boot-in{display:flex;flex-direction:column;align-items:center;gap:18px;}
-.boot-seal{display:grid;place-items:center;width:74px;height:74px;border-radius:16px;background:var(--accent);color:var(--seal-fg);font-family:var(--font-display);font-size:44px;font-weight:600;animation:bootseal .9s var(--ease) both;}
-@keyframes bootseal{0%{opacity:0;transform:scale(.6) rotate(-6deg);}100%{opacity:1;transform:none;}}
-.boot-name{font-family:var(--font-display);font-size:19px;letter-spacing:.3em;color:var(--ink);margin:0;animation:rise .8s var(--ease) .15s both;}
-.boot-name i{font-style:normal;font-size:10px;letter-spacing:.42em;color:var(--mist);margin-left:10px;vertical-align:2px;}
-.boot-line{width:132px;height:1px;background:var(--line);overflow:hidden;display:block;}
-.boot-line b{display:block;width:0;height:100%;background:var(--accent);animation:bootline 1s var(--ease) .2s forwards;}
-@keyframes bootline{to{width:100%;}}
+/* 开屏 · 电影级揭幕 */
+.boot{position:fixed;inset:0;z-index:121;display:grid;place-items:center;background:transparent;}
+.boot-in{display:flex;flex-direction:column;align-items:center;gap:22px;transition:opacity .5s var(--ease),translate .5s var(--ease);}
+.boot.out .boot-in{opacity:0;translate:0 -26px;}
+.boot-seal{display:grid;place-items:center;width:78px;height:78px;border-radius:17px;background:var(--accent);color:var(--seal-fg);font-family:var(--font-display);font-size:46px;font-weight:600;box-shadow:0 24px 60px -22px rgba(142,47,47,.55);animation:bootseal .9s var(--ease) .1s both;}
+@keyframes bootseal{0%{opacity:0;transform:scale(.55) rotate(-8deg);}100%{opacity:1;transform:none;}}
+.boot-name{margin:0;font-family:var(--font-display);font-weight:600;font-size:clamp(30px,4.6vw,44px);letter-spacing:.3em;color:var(--ink);}
+.boot-name .mask{display:block;overflow:hidden;}
+.boot-name .mask span{display:block;transform:translateY(110%);animation:maskUp 1s var(--ease) .25s forwards;}
+.boot-latin{margin:2px 0 0;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.52em;color:var(--mist);text-transform:uppercase;}
+.boot-latin .mask{display:block;overflow:hidden;}
+.boot-latin .mask span{display:block;transform:translateY(120%);animation:maskUp .9s var(--ease) .5s forwards;}
+@keyframes maskUp{to{transform:none;}}
+.boot-meter{display:flex;align-items:center;gap:14px;margin-top:6px;}
+.boot-line{width:148px;height:1px;background:var(--line);overflow:hidden;display:block;}
+.boot-line b{display:block;width:0;height:100%;background:var(--accent);transition:width .18s linear;}
+.boot-pct{font-family:var(--font-mono);font-size:11px;letter-spacing:.22em;color:var(--mist);min-width:34px;text-align:right;margin:0;}
+.boot-pct::after{content:"%";}
+/* 三层帘幕 */
+.curtain{position:fixed;inset:0;z-index:120;transform:translateY(0);pointer-events:none;}
+.curtain.c1{background:var(--paper);z-index:122;transition:transform .8s cubic-bezier(.76,0,.24,1) .05s;}
+.curtain.c2{background:var(--ink);z-index:121;transition:transform .8s cubic-bezier(.76,0,.24,1) .18s;}
+.curtain.c3{background:var(--accent);z-index:120;transition:transform .8s cubic-bezier(.76,0,.24,1) .3s;}
+html.curtailed .curtain{transform:translateY(-101%);}
+/* 印章飞行克隆 */
+.seal-fly{position:fixed;z-index:125;display:grid;place-items:center;border-radius:16px;background:var(--accent);color:var(--seal-fg);font-family:var(--font-display);font-weight:600;pointer-events:none;transition:all .75s cubic-bezier(.65,0,.25,1);}
 html.booting{overflow:hidden;}
-@media (prefers-reduced-motion:reduce){.boot{display:none;}}
+html:not(.booted) .hero-copy>*{opacity:0;}
+html.booted .hero-copy>*{animation:rise .9s var(--ease) both;}
+html.booted .hero-copy>*:nth-child(1){animation-delay:.12s;}
+html.booted .hero-copy>*:nth-child(2){animation-delay:.27s;}
+html.booted .hero-copy>*:nth-child(3){animation-delay:.42s;}
+html.booted .hero-copy>*:nth-child(4){animation-delay:.57s;}
+html.booted .hero-copy>*:nth-child(5){animation-delay:.72s;}
+html:not(.booted) .hero-lockup .ch{opacity:0;}
+@keyframes settle{from{transform:scale(1.16) translate3d(0,var(--hy,0px),0);}to{transform:scale(1.06) translate3d(0,var(--hy,0px),0);}}
+html.booted .hero-media img{animation:settle 1.7s var(--ease) both;}
+@media (prefers-reduced-motion:reduce){.boot,.curtain{display:none;}}
 
 /* 自定义光影光标（仅桌面精确指针） */
 .cursor-dot,.cursor-ring{position:fixed;top:0;left:0;z-index:130;pointer-events:none;border-radius:50%;opacity:0;will-change:transform;}
@@ -477,14 +503,36 @@ html.has-cursor input,html.has-cursor textarea{cursor:text;}
 
 /* 看片层方向性滑动 */
 .v-img.slide-in{transition:opacity .34s var(--ease),filter .34s var(--ease),transform .42s var(--ease);}
+
+/* v7 · 磁性按钮 */
+.theme-btn{transition:color .25s var(--ease),border-color .25s var(--ease),transform .25s var(--ease);}
+.sub-row button{transition:opacity .22s var(--ease),transform .25s var(--ease);}
+.to-top{transition:opacity .32s var(--ease),translate .32s var(--ease),color .2s var(--ease),border-color .2s var(--ease),transform .25s var(--ease);}
+
+/* v7 · 主题化滚动条 */
+html{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--mist) 45%,transparent) transparent;}
+::-webkit-scrollbar{width:10px;height:10px;}
+::-webkit-scrollbar-track{background:var(--paper);}
+::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--mist) 42%,transparent);border-radius:6px;border:2px solid var(--paper);}
+::-webkit-scrollbar-thumb:hover{background:var(--accent);}
 </style>
 </head>
 <body>
-<div class="boot" id="boot" aria-hidden="true">
-  <div class="boot-in">
-    <span class="boot-seal">鸢</span>
-    <p class="boot-name">光年留影<i>LIGHTYEAR</i></p>
-    <span class="boot-line"><b></b></span>
+<div class="curtain c3" aria-hidden="true"></div>
+<div class="curtain c2" aria-hidden="true"></div>
+<div class="curtain c1" aria-hidden="true">
+  <div class="boot" id="boot">
+    <div class="boot-in">
+      <span class="boot-seal" id="bootSeal">鸢</span>
+      <div>
+        <p class="boot-name"><span class="mask"><span>光年留影</span></span></p>
+        <p class="boot-latin"><span class="mask"><span>Lightyear · 摄影作品集</span></span></p>
+      </div>
+      <div class="boot-meter">
+        <span class="boot-line"><b id="bootBar"></b></span>
+        <p class="boot-pct" id="bootPct">0</p>
+      </div>
+    </div>
   </div>
 </div>
 <div class="cursor-dot" id="curDot" aria-hidden="true"></div>
@@ -1368,19 +1416,71 @@ else if (e.key === 'ArrowRight'){ step(1); }
     } else { dustOn = true; dustFrame(); }
   }
 
-  /* ---------- v5 · 开屏揭幕 ---------- */
+  /* ---------- v7 · 电影级开屏 ---------- */
   var bootEl = $('#boot');
+  var finishBoot = function(){
+    document.documentElement.classList.remove('booting');
+    document.documentElement.classList.add('booted');
+    $$('.curtain').forEach(function(c){ document.documentElement.classList.add('curtailed'); });
+    setTimeout(function(){
+      $$('.curtain').forEach(function(c){ if (c.parentNode){ c.parentNode.removeChild(c); } });
+    }, 1400);
+    /* 印章飞入导航 */
+    var bSeal = $('#bootSeal'), hSeal = $('.brand .seal');
+    if (bSeal && hSeal){
+      var br = bSeal.getBoundingClientRect();
+      var hr = hSeal.getBoundingClientRect();
+      var fly = bSeal.cloneNode(true);
+      fly.id = '';
+      fly.classList.add('seal-fly');
+      fly.style.left = br.left + 'px';
+      fly.style.top = br.top + 'px';
+      fly.style.width = br.width + 'px';
+      fly.style.height = br.height + 'px';
+      fly.style.fontSize = (parseFloat(getComputedStyle(bSeal).fontSize) || 40) + 'px';
+      document.body.appendChild(fly);
+      bSeal.style.visibility = 'hidden';
+      setTimeout(function(){
+        fly.style.left = (hr.left + (hr.width - br.width) / 2) + 'px';
+        fly.style.top = (hr.top + (hr.height - br.height) / 2) + 'px';
+        fly.style.width = hr.width + 'px';
+        fly.style.height = hr.height + 'px';
+        fly.style.fontSize = (hr.width * 0.82) + 'px';
+        fly.style.borderRadius = (hr.width * 0.3) + 'px';
+      }, 60);
+      setTimeout(function(){
+        if (fly.parentNode){ fly.parentNode.removeChild(fly); }
+        bSeal.style.visibility = '';
+      }, 900);
+    }
+    if (bootEl && bootEl.parentNode){ bootEl.parentNode.removeChild(bootEl); }
+  };
   if (bootEl){
-    var bootDone = function(){
-      bootEl.classList.add('boot-done');
-      document.documentElement.classList.remove('booting');
-      setTimeout(function(){ if (bootEl.parentNode){ bootEl.parentNode.removeChild(bootEl); } }, 900);
-    };
-    document.documentElement.classList.add('booting');
-    if (reduced){ bootEl.parentNode.removeChild(bootEl); }
-    else {
-      window.addEventListener('load', function(){ setTimeout(bootDone, 750); });
-      setTimeout(bootDone, 2600);
+    if (reduced){
+      bootEl.parentNode.removeChild(bootEl);
+      document.documentElement.classList.add('booted');
+    } else {
+      document.documentElement.classList.add('booting');
+      var bootBar = $('#bootBar'), bootPct = $('#bootPct');
+      var pageLoaded = document.readyState === 'complete';
+      window.addEventListener('load', function(){ pageLoaded = true; });
+      var pct = 0;
+      var bootTick = function(){
+        pct += pageLoaded ? 7 : Math.max(0.4, (99 - pct) * 0.028);
+        if (pct >= 100){ pct = 100; }
+        if (bootBar){ bootBar.style.width = pct.toFixed(1) + '%'; }
+        if (bootPct){ bootPct.textContent = String(Math.floor(pct)); }
+        if (pct >= 100){
+          setTimeout(function(){
+            if (bootEl){ bootEl.classList.add('out'); }
+            finishBoot();
+          }, 260);
+          return;
+        }
+        requestAnimationFrame(bootTick);
+      };
+      requestAnimationFrame(bootTick);
+      setTimeout(function(){ pageLoaded = true; }, 3400);
     }
   }
 
@@ -1490,6 +1590,19 @@ else if (e.key === 'ArrowRight'){ step(1); }
       }, { passive: true });
       paraTick();
     }
+  }
+
+  /* ---------- v7 · 磁性按钮（桌面） ---------- */
+  if (matchMedia('(pointer: fine)').matches && !reduced){
+    $$('.theme-btn, .to-top, .sub-row button').forEach(function(el){
+      el.addEventListener('mousemove', function(e){
+        var r = el.getBoundingClientRect();
+        var dx = e.clientX - (r.left + r.width / 2);
+        var dy = e.clientY - (r.top + r.height / 2);
+        el.style.transform = 'translate(' + (dx * 0.24).toFixed(1) + 'px,' + (dy * 0.24).toFixed(1) + 'px)';
+      });
+      el.addEventListener('mouseleave', function(){ el.style.transform = ''; });
+    });
   }
 
   /* ---------- 外观切换 ---------- */
