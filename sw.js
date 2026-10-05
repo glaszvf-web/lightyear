@@ -1,4 +1,4 @@
-/* 光年留影 Service Worker：外壳 network-first，图片 cache-first */
+/* 光影流年 Service Worker：外壳 network-first，图片 cache-first */
 var VERSION = 'ly-v11.0.0';
 var SHELL_CACHE = 'ly-shell-' + VERSION;
 var PHOTO_CACHE = 'ly-photos-' + VERSION;
