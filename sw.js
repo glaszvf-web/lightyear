@@ -1,5 +1,5 @@
 /* 光影流年 Service Worker：外壳 network-first，图片 cache-first */
-var VERSION = 'ly-v12.0.0';
+var VERSION = 'ly-v12.0.1';
 var SHELL_CACHE = 'ly-shell-' + VERSION;
 var PHOTO_CACHE = 'ly-photos-' + VERSION;
 var SHELL = [
@@ -25,7 +25,7 @@ self.addEventListener('fetch', function(e){
   if (url.origin !== location.origin){ return; }
   if (req.mode === 'navigate'){
     e.respondWith(
-      fetch(req).then(function(res){
+      fetch(req, { cache: 'reload' }).then(function(res){
         var copy = res.clone();
         caches.open(SHELL_CACHE).then(function(c){ c.put('./index.html', copy); });
         return res;

@@ -2083,8 +2083,7 @@ else if (e.key === 'ArrowRight'){ step(1); }
     applyHauntText(true);
     if (!reduced){
       flickTimer = setInterval(function(){
-        if (document.hidden || !viewer.hidden === false){ return; }
-        if (!viewer.hidden){ return; }
+        if (document.hidden || !viewer.hidden){ return; }
         document.documentElement.classList.add('flick');
         setTimeout(function(){ document.documentElement.classList.remove('flick'); }, 90 + Math.random() * 90);
       }, 5200 + Math.random() * 5200);
